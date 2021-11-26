@@ -1,0 +1,35 @@
+{
+  "name": "jsquest_plus",
+  "version": "0.1.0",
+  "description": "A JavaScript implementation of the QUEST+ staircase algorithm (Watson, 2017).",
+  "main": "src/jsQuestPlus.js",
+  "type": "module",
+  "dependencies": {
+    "numeric_es6": "github:tpronk/numeric"
+  },
+  "devDependencies": {
+    "@rollup/plugin-node-resolve": "^13.0.0",
+    "eslint": "^8.0.1",
+    "rollup": "^2.50.1",
+    "rollup-plugin-sourcemaps": "^0.6.3"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": "https://github.com/kurokida/jsQUEST/tree/quest_plus",
+  "author": {
+    "name": "Daiichiro Kuroki"
+  },
+  "contributors": [
+    {
+      "name": "Thomas Pronk",
+      "email": "pronkthomas@gmail.com",
+      "url": "https://thomaspronk.com"
+    }
+  ],
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/kurokida/jsQUEST/issues"
+  },
+  "homepage": "https://kurokida.github.io/jsQUEST/"
+}
