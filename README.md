@@ -10,10 +10,10 @@ This section describes how to use jsQuestPlus for [Watson's second example: "Est
 ## Importing jsQuestPlus
 The library can be imported either as a UMD module or as an ES6 module.
 
-### As a UMD modules
+### As a UMD module
 <UMD example here>
 
-### As an ES6 module.
+### As an ES6 module
 At the top of your script, add the following line.
 	
 ```javascript
