@@ -7,6 +7,19 @@ that can deal with multiple stimulus parameters, multiple psychometric functions
 
 This section describes how to use jsQuestPlus for [Watson's second example: "Estimation of contrast threshold, slope, and lapse {1, 3, 2}"](https://jov.arvojournals.org/article.aspx?articleid=2611972#159437865)". Before creating an instance of jsQuestPlus, we need to specify a number of parameters.
 
+## Importing jsQuestPlus
+The library can be imported either as a UMD module or as an ES6 module.
+
+### As a UMD modules
+<UMD example here>
+
+### As an ES6 module.
+At the top of your script, add the following line.
+	
+```javascript
+import {jsquest} from "./jsQuestPlus.module.js";
+```
+
 ## Specify psychometric functions
 First, we specify the psychometric functions that correspond to each response. The function representing probabilities of incorrect responses in a 2-Alternative Forced-Choice (2AFC) task can be written as follows.
 
@@ -53,51 +66,42 @@ In this example, the instance is assigned to the variable `jsqp`, which is an ab
 3. An array of psychometric parameters. 
 
 The first argument passed to the psychometric functions is always the stimulus parameter. Successive arguments are delivered in the same order as they are specified in the array of psychometric parameters. I.e., the first argument above is the `threshold`, which is passed as second argument to the psychometric function, the second argument above is the `slope`, which is passed as third argument to the psychometric function. Priors will be treated as a uniform probability over all psychometric parameter combinations.
-	
-After completing the initialization, the stimulus parameters that are predicted to yield the most informative results at the next trial can be obtained as follows:
+
+## Get and update stimulus parameters  
+After completing the initialization, the stimulus parameters that are predicted to yield the most informative results at the next trial, can be obtained as follows:
 
 ```javascript
 const stim = jsqp.getStimParams()
 ```
 
-The getStimParams function returns the stimulus parameter(s) which minimizes the expected entropies of the p.d.f. of the psychometric parameters. The QUEST+ method recommends to present the stimulus with the retuned parameters and obtain the response. In the 2AFC task, the response is 0 or 1. The experimenter needs to carefully assign the number so as to correspond to the specified order of the psychometric functions. If a correct response (response = 1) is obtained, update the QUEST data as follows:
+The getStimParams function returns the stimulus parameters that minimize the expected entropies of the probability density function (PDF) of the psychometric parameters. The QUEST+ method recommends presenting the next stimulus with these parameters and register the response. In the 2AFC task, the response is 0 or 1. The experimenter needs to carefully assign the number so as to correspond to the specified order of the psychometric functions. If a correct response (response = 1) is obtained, update the QUEST data as follows:
 
 ```javascript
 jsqp.update(stim, 1)
 ```
 
-The presentation of stimuli, obtaining the responses, and updating of QUEST data are repeated a predetermined number of times. Finally, the psychometric parameter estimates with the highest p.d.f. can be obtained as follows:
+Presenting the stimuli, obtaining the responses, and updating of QUEST data, are repeated a predetermined number of times. Finally, the psychometric parameter estimates with the highest PDF can be obtained as follows:
 
 ```javascript
 const estimates = jsqp.getEstimates()
 ```
 
-The `estimates` array includes all the estimates of the psychometric parameters, that is, the threshold, slope, and lapse in this example.
+The `estimates` array includes all the estimates of the psychometric parameters. For the example these are the threshold, slope, and lapse.
 
+## Convenience functions
+- The [numeric.js](https://github.com/sloisel/numeric) library performs matrix/array calculations at high speeds. This library is included in jsQuestPlus, with some of its functions available by prefixing them with `jsQuestPlus.`: `abs, add, cos, dim, div, dot, exp, floor, isFinite, isNaN, linspace, log, mod, mul, pow, round, sin, sqrt, sub, sum, transpose`.
 
-# Libraries
-- [The numeric.js](https://github.com/sloisel/numeric): This performs matrix/array calculations at high speed. This library is included in jsQuestPlus, so there is no need to install it separately or write it in a script tag. The following numeric functions can be used by prefixing `jsQuestPlus`: `abs, add, cos, dim, div, dot, exp, floor, isFinite, isNaN, linspace, log, mod, mul, pow, round, sin, sqrt, sub, sum, transpose`
-
-
-# The following section describes how to use jsQUEST as an ES6 module.
-
-@tpronk developed a prototype of jsQuestPlus as an ES6 module. He adapted the code to act like an ES6 module, so it can easily be imported into other ES6 modules as follows:
-
-```javascript
-import {jsquest} from "./jsQuestPlus.module.js";
-```
-
-# Information for developers/contributors
+# Information for developers
 
 ## Installation
 Install node, then clone the repo to your hard drive. Next, you can install jsQuestPlus and its dependencies by running:
 
 `npm install`
 
-## Building jsQUEST
+## Building jsQuestPlus
 To package jsQuestPlus and it's dependencies, and export those as UMD bundle, run the command below. Your bundle will be available in the `dist/` directory:
 
 `npx rollup -c`
 
 ## Notes
-jsQuestPlus depends on the numeric library, which @tpronk forked and turned into an ES6 module as well. The fork of numeric can be found [here](https://github.com/tpronk/numeric).
+jsQuestPlus depends on a [fork of the numeric library]((https://github.com/tpronk/numeric), which turns this library into an ES6 module.
