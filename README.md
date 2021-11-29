@@ -1,16 +1,14 @@
 # QUEST+
 
 QUEST+ ([Watson, 2017](https://doi.org/10.1167/17.3.10)) is an extension of QUEST ([Watson & Pelli, 1983](https://doi.org/10.3758/BF03202828))
-that can deal with multiple stimulus parameters, multiple psychometric functions, and more than two response options.
-
-# jsQuestPlus
-jsQuestPlus is a JavaScript library to use the QUEST+ method in online experiments.
+that can deal with multiple stimulus parameters, multiple psychometric functions, and more than two response options. The jsQuestPlus JavaScript library allows researchers to use QUEST+ in online experiments.
 
 # How to use
 
-This section describes how to use jsQuestPlus for [the Watson's second example "Estimation of contrast threshold, slope, and lapse {1, 3, 2}](https://jov.arvojournals.org/article.aspx?articleid=2611972#159437865)".
+This section describes how to use jsQuestPlus for [Watson's second example: "Estimation of contrast threshold, slope, and lapse {1, 3, 2}"](https://jov.arvojournals.org/article.aspx?articleid=2611972#159437865)". Before creating an instance of jsQuestPlus, we need to specify a number of parameters.
 
-To initialize the QUEST+ data, the psychometric functions corresponding to each response must be specified. For example, the function representing probabilities of incorrect responses in the 2AFC task can be written as follows.
+## Specify psychometric functions
+First, we specify the psychometric functions that correspond to each response. The function representing probabilities of incorrect responses in a 2-Alternative Forced-Choice (2AFC) task can be written as follows.
 
 ```javascript
 function func_resp0 (stim, threshold, slope, guess, lapse) {
@@ -21,7 +19,7 @@ function func_resp0 (stim, threshold, slope, guess, lapse) {
 }
 ```
 
-Note that the incorrect response corresponds to 0. Similarly, the function representing probabilities of correct responses (response = 1) in the 2AFC task can be written as follows:
+An incorrect response is represented by the value 0. Similarly, the function representing the probabilities of correct responses (response = 1) in the 2AFC task can be written as follows:
 
 ```javascript
 function func_resp1(stim, threshold, slope, guess, lapse) {
@@ -29,7 +27,10 @@ function func_resp1(stim, threshold, slope, guess, lapse) {
 }
 ```
 
-Note that the func_resp0 and func_resp1 are complementary, that is, they add up to 1. Then, specify the range of possible values for the stimulus and psychometric parameters. These parameters must be specified as an array, including the case where they are single values. The `jsQuestPlus.linspace` and `jsQuestPlus.array` functions are useful.
+Note that the func_resp0 and func_resp1 are complementary, that is, their probabilities add up to 1. 
+
+## Specify range of allowed parameter values
+Next, specify the range of possible values for the stimulus and psychometric parameters. These parameters must be specified as an array, also when they are single values. The `jsQuestPlus.linspace` and `jsQuestPlus.array` functions can be useful shorthands for doing so.
 
 ```javascript
 const contrast_samples = jsQuestPlus.linspace (-40, 0) // [-40, -39, -38, ..., -1, 0]
@@ -39,13 +40,19 @@ const lapse_samples = jsQuestPlus.array (0, 0.01, 0.04) // [0, 0.01, 0.02, 0.03,
 const guess = [0.5] // Although the parameter of guess is assumed as a single value, this should be specified as an array.
 ```
 
+## Create jsQuestPlus instance
 After specifying the psychometric functions and all parameters, initialize the QUEST+ data as follows:
 
 ```javascript
 const jsqp = new jsQuestPlus ([func_resp0, func_resp1], [contrast_samples], [threshold_samples, slope_samples, guess, lapse_samples])
 ```
 
-The jsqp is an abbreviation of jsQuestPlus, and any variable names are available. The first argument of the jsQuestPlus function is an array of the psychometric functions, the second argument is an array of the stimulus parameters, and the third argument is an array of the psychometric parameters. Note that the elements in each array (e.g., threshold_samples, slope_samples, guess, and lapse_samples) must be written in the order specified in the psychometric function declaration. Priors will be treated as a uniform probability over all psychometric parameter combinations.
+In this example, the instance is assigned to the variable `jsqp`, which is an abbreviation for jsQuestPlus. However, other valid variable names could be used as well. The arguments of the jsQuestPlus function are, in sequence, the following:
+1. An array of psychometric functions
+2. An array of stimulus parameters
+3. An array of psychometric parameters. 
+
+The first argument passed to the psychometric functions is always the stimulus parameter. Successive arguments are delivered in the same order as they are specified in the array of psychometric parameters. I.e., the first argument above is the `threshold`, which is passed as second argument to the psychometric function, the second argument above is the `slope`, which is passed as third argument to the psychometric function. Priors will be treated as a uniform probability over all psychometric parameter combinations.
 	
 After completing the initialization, the stimulus parameters that are predicted to yield the most informative results at the next trial can be obtained as follows:
 
