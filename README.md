@@ -7,23 +7,23 @@ that can deal with multiple stimulus parameters, multiple psychometric functions
 
 The demos folder contains some sample code.
 
-- Example_1stim_1psy_2resp_Watson(2017).html
+## Example_1stim_1psy_2resp_Watson(2017).html
 
 This is the sample code for [Watson's first example: "Estimation of contrast threshold {1, 1, 2}"](https://jov.arvojournals.org/article.aspx?articleid=2611972#159437865). The threshold is estimated using the stimulus parameter (contrast) and responses described in Watson's paper.
 
-- Simulation_1stim_1psy_2resp_Watson(2017).html
+## Simulation_1stim_1psy_2resp_Watson(2017).html
 
 This file is the same as `Example_1stim_1psy_2resp_Watson(2017).html`, except that it simulates the observer's response. The final estimate will change slightly each time you run the program.
 
-- Example_2stim_3psy_2resp_Watson(2017).html
+## Example_2stim_3psy_2resp_Watson(2017).html
 
 This is the sample code for [Watson's forth example: "Contrast sensitivity function {2, 3, 2}"](https://jov.arvojournals.org/article.aspx?articleid=2611972#159437865). The psychometric parameters are estimated using the stimulus parameters and responses described in Watson's paper.
 
-- Simulation_1stim_1psy_2resp_Watson(2017).html
+## Simulation_1stim_1psy_2resp_Watson(2017).html
 
 This file is the same as `Example_2stim_3psy_2resp_Watson(2017).html`, except that it simulates the observer's response. The final estimates will change slightly each time you run the program.
 
-- jsPsychDemo/jsQuestPlus_jsPsychDemo.html
+## jsPsychDemo/jsQuestPlus_jsPsychDemo.html
 
 This is the sample code for [jsPsych](https://github.com/jspsych/jsPsych/) users. This simulates [Watson's second example: "Estimation of contrast threshold, slope, and lapse {1, 3, 2}"](https://jov.arvojournals.org/article.aspx?articleid=2611972#159437865).
 
