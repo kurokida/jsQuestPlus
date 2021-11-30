@@ -3,9 +3,33 @@
 QUEST+ ([Watson, 2017](https://doi.org/10.1167/17.3.10)) is an extension of QUEST ([Watson & Pelli, 1983](https://doi.org/10.3758/BF03202828))
 that can deal with multiple stimulus parameters, multiple psychometric functions, and more than two response options. The jsQuestPlus JavaScript library allows researchers to use QUEST+ in online experiments.
 
+# Demonstrations
+
+The demos folder contains some sample code.
+
+- Example_1stim_1psy_2resp_Watson(2017).html
+
+This is the sample code for [Watson's first example: "Estimation of contrast threshold {1, 1, 2}"](https://jov.arvojournals.org/article.aspx?articleid=2611972#159437865). The threshold is estimated using the stimulus parameter (contrast) and responses described in Watson's paper.
+
+- Simulation_1stim_1psy_2resp_Watson(2017).html
+
+This file is the same as `Example_1stim_1psy_2resp_Watson(2017).html`, except that it simulates the observer's response. The final estimate will change slightly each time you run the program.
+
+- Example_2stim_3psy_2resp_Watson(2017).html
+
+This is the sample code for [Watson's forth example: "Contrast sensitivity function {2, 3, 2}"](https://jov.arvojournals.org/article.aspx?articleid=2611972#159437865). The psychometric parameters are estimated using the stimulus parameters and responses described in Watson's paper.
+
+- Simulation_1stim_1psy_2resp_Watson(2017).html
+
+This file is the same as `Example_2stim_3psy_2resp_Watson(2017).html`, except that it simulates the observer's response. The final estimates will change slightly each time you run the program.
+
+- jsPsychDemo/jsQuestPlus_jsPsychDemo.html
+
+This is the sample code for [jsPsych](https://github.com/jspsych/jsPsych/) users. This simulates [Watson's second example: "Estimation of contrast threshold, slope, and lapse {1, 3, 2}"](https://jov.arvojournals.org/article.aspx?articleid=2611972#159437865).
+
 # How to use
 
-This section describes how to use jsQuestPlus for [Watson's second example: "Estimation of contrast threshold, slope, and lapse {1, 3, 2}"](https://jov.arvojournals.org/article.aspx?articleid=2611972#159437865)". Before creating an instance of jsQuestPlus, we need to specify a number of parameters.
+This section describes how to use jsQuestPlus for [Watson's second example: "Estimation of contrast threshold, slope, and lapse {1, 3, 2}"](https://jov.arvojournals.org/article.aspx?articleid=2611972#159437865). Before creating an instance of jsQuestPlus, we need to specify a number of parameters.
 
 ## Importing jsQuestPlus
 The library can be imported either as a UMD module or as an ES6 module.
@@ -47,8 +71,8 @@ Next, specify the range of possible values for the stimulus and psychometric par
 
 ```javascript
 const contrast_samples = jsQuestPlus.linspace (-40, 0) // [-40, -39, -38, ..., -1, 0]
-const threshold_samples = jsQuestPlus.linspace (-40,0) // [-40, -39, -38, ..., -1, 0]
-const slope_samples = jsQuestPlus.linspace (2,5) // [2, 3, 4, 5]
+const threshold_samples = jsQuestPlus.linspace (-40, 0) // [-40, -39, -38, ..., -1, 0]
+const slope_samples = jsQuestPlus.linspace (2, 5) // [2, 3, 4, 5]
 const lapse_samples = jsQuestPlus.array (0, 0.01, 0.04) // [0, 0.01, 0.02, 0.03, 0.04]
 const guess = [0.5] // Although the parameter of guess is assumed as a single value, this should be specified as an array.
 ```
