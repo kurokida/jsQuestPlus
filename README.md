@@ -9,7 +9,8 @@ The demos folder contains some sample code.
 
 ## Example_1stim_1psy_2resp_Watson(2017).html
 
-This is the sample code for [Watson's first example: "Estimation of contrast threshold {1, 1, 2}"](https://jov.arvojournals.org/article.aspx?articleid=2611972#159437865). The threshold is estimated using the stimulus parameter (contrast) and responses described in Watson's paper. [Run this example.](https://www.hes.kyushu-u.ac.jp/~kurokid/jsQuestPlus/demos/Example_1stim_1psy_2resp_Watson(2017).html). [See the source code.](https://github.com/kurokida/jsQuestPlus/blob/main/demos/Example_1stim_1psy_2resp_Watson(2017).html).
+This is the sample code for [Watson's first example: "Estimation of contrast threshold {1, 1, 2}"](https://jov.arvojournals.org/article.aspx?articleid=2611972#159437865). The threshold is estimated using the stimulus parameter (contrast) and responses described in Watson's paper.
+ [Run this example.](https://www.hes.kyushu-u.ac.jp/~kurokid/jsQuestPlus/demos/Example_1stim_1psy_2resp_Watson(2017).html) [See the source code.](https://github.com/kurokida/jsQuestPlus/blob/main/demos/Example_1stim_1psy_2resp_Watson(2017).html)
 
 ## Simulation_1stim_1psy_2resp_Watson(2017).html
 
