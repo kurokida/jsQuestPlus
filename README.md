@@ -18,7 +18,8 @@ This is the sample code for [Watson's first example: "Estimation of contrast thr
 
 This file is the same as `Example_1stim_1psy_2resp_Watson(2017).html`, except that it simulates the observer's response. The final estimate will change slightly each time you run the program. 
 
-- [Run this example.](https://www.hes.kyushu-u.ac.jp/~kurokid/jsQuestPlus/demos/Simulation_1stim_1psy_2resp_Watson(2017).html) - [See the source code.](https://github.com/kurokida/jsQuestPlus/blob/main/demos/Simulation_1stim_1psy_2resp_Watson(2017).html)
+- [Run this example.](https://www.hes.kyushu-u.ac.jp/~kurokid/jsQuestPlus/demos/Simulation_1stim_1psy_2resp_Watson(2017).html) 
+- [See the source code.](https://github.com/kurokida/jsQuestPlus/blob/main/demos/Simulation_1stim_1psy_2resp_Watson(2017).html)
 
 ## Example_2stim_3psy_2resp_Watson(2017).html
 
@@ -31,7 +32,8 @@ This is the sample code for [Watson's forth example: "Contrast sensitivity funct
 
 This file is the same as `Example_2stim_3psy_2resp_Watson(2017).html`, except that it simulates the observer's response. The final estimates will change slightly each time you run the program. 
 
-- [Run this example.](https://www.hes.kyushu-u.ac.jp/~kurokid/jsQuestPlus/demos/Simulation_2stim_3psy_2resp_Watson(2017).html) - [See the source code.](https://github.com/kurokida/jsQuestPlus/blob/main/demos/Simulation_2stim_3psy_2resp_Watson(2017).html)
+- [Run this example.](https://www.hes.kyushu-u.ac.jp/~kurokid/jsQuestPlus/demos/Simulation_2stim_3psy_2resp_Watson(2017).html) 
+- [See the source code.](https://github.com/kurokida/jsQuestPlus/blob/main/demos/Simulation_2stim_3psy_2resp_Watson(2017).html)
 
 ## jsPsychDemo/jsQuestPlus_jsPsychDemo.html
 
