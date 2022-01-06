@@ -1,15 +1,18 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <script src="./jspsych.js"></script>
-    <script src="./jspsych-html-button-response.js"></script>
+    <script src="https://unpkg.com/jspsych@7.1.2"></script>
+    <script src="https://unpkg.com/@jspsych/plugin-html-button-response@1.1.0"></script>
     <script src="../dist/jsQuestPlus.js"></script>
-    <link rel="stylesheet" href="./jspsych.css">
+    <link rel="stylesheet" href="https://unpkg.com/jspsych@7.1.2/css/jspsych.css">
   </head>
   <body></body>
   <script>
+    const jsPsych = initJsPsych()
+    console.log(`jsPsych Version ${jsPsych.version()}`)
+
     const instruction = {
-        type: 'html-button-response',
+        type: jsPsychHtmlButtonResponse,
         stimulus: `<p>This program demonstrates how to use jsQuestPlus for 
             <a href="https://jov.arvojournals.org/article.aspx?articleid=2611972#159437865">Watson (2017)'s second example: 
             "Estimation of contrast threshold, slope, and lapse {1, 3, 2}"</a>.</p>
@@ -40,7 +43,7 @@
     const trialsDesired = 64
 
     const trial = {
-        type: 'html-button-response',
+        type: jsPsychHtmlButtonResponse,
         stimulus: '',
         choices: ['You do not need to click this button.'],
         trial_duration: 100, // For automation
@@ -76,7 +79,7 @@
     }
 
     const briefing = {
-        type: 'html-button-response',
+        type: jsPsychHtmlButtonResponse,
         stimulus: function(){
             const estimates = jsqp.getEstimates()
             console.log(estimates)
@@ -87,9 +90,7 @@
         choices: ['Finish']
     }
 
-    jsPsych.init({
-        timeline: [instruction, loop_node, briefing]
-    });
+    jsPsych.run([instruction, loop_node, briefing])
 
   </script>
 </html>
