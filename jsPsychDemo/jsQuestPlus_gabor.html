@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <script src="https://unpkg.com/jspsych@7.1.2"></script>
+    <script src="https://unpkg.com/@jspsych/plugin-html-button-response@1.1.0"></script>
+    <script src="./jspsych-psychophysics.js"></script>
+    <script src="../numeric.js"></script>
+    <script src="../dist/jsQuestPlus.js"></script>
+    <link rel="stylesheet" href="https://unpkg.com/jspsych@7.1.2/css/jspsych.css">
+</head>
+<body></body>
+<script>
+    // This file demonstrates how to present gabor patches.
+
+    const jsPsych = initJsPsych({
+        on_finish: function() {
+            jsPsych.data.displayData();
+        }
+    })
+
+    function func_resp0 (stim, threshold, slope, guess, lapse) {
+        // const tmp = slope * (stim - threshold)/20
+        const tmp = slope * (stim - threshold) // Note that it is not divided by 20.
+        return lapse - (guess + lapse -1) * Math.exp ( -Math.pow (10, tmp))
+    }
+
+    function func_resp1(stim, threshold, slope, guess, lapse) {
+        return 1 - func_resp0(stim, threshold, slope, guess, lapse) 
+    }
+
+    const contrast_samples = jsQuestPlus.array(0, 0.05, 2)
+    const threshold_samples = jsQuestPlus.array(0, 0.05, 2)
+    const slope_samples = jsQuestPlus.linspace (2,5) // [2, 3, 4, 5]
+    const lapse_samples =jsQuestPlus.array (0, 0.01, 0.04) // [0, 0.01, 0.02, 0.03, 0.04]
+    const guess = [0] // The parameter of guess is assumed as a single value.
+
+    const nTrials = 20
+
+    let trial_num = 1
+    let stim
+
+    const jsqp = new jsQuestPlus ([func_resp0, func_resp1], [contrast_samples], [threshold_samples, slope_samples, guess, lapse_samples])
+
+    const trial = {
+        type: jsPsychPsychophysics,
+        stimuli: function(){
+            stim = jsqp.getStimParams()
+            console.log(stim)
+            
+            const gabor = {
+                obj_type: 'gabor',
+                tilt: 30,
+                sf: 0.05,
+                phase: 90,
+                width: 300,
+                sc: 20,
+                contrast: stim,
+                contrastPreMultiplicator: 0.5,
+                disableNorm: true,
+            }
+
+            return [gabor]
+
+        },
+        canvas_height: 700,
+        choices: ['f', 'j'],
+        prompt: `<p>Press the F key to decrease the contrast.</p>
+        <p>Press the J key to increase the contrast</p>`,
+        on_finish(data){
+            let response
+            if(jsPsych.pluginAPI.compareKeys(data.response, 'f')){
+                response = 1
+            } else {
+                response = 0
+            }
+            jsqp.update(stim, response)
+        }
+    }
+
+    const loop_node = {
+        timeline: [trial],
+        loop_function: function(data){
+            if (trial_num < nTrials){
+                trial_num++
+                return true
+            } else {
+                return false
+            }
+        }
+    }
+
+    const debriefing = {
+        type: jsPsychHtmlButtonResponse,
+        stimulus: function(){
+            const estimates = jsqp.getEstimates()
+            console.log(estimates)
+
+            return `<p>The threshold has been estimated to be: ${estimates[0]}</p>
+            <p>The slope has been estimated to be: ${estimates[1]}</p>
+            <p>The lapse has been estimated to be: ${estimates[3]}</p>`
+
+        },
+        choices: ['Finish'],
+    }
+
+    jsPsych.run([loop_node, debriefing])
+
+</script>
+
+</html>
