@@ -1,0 +1,154 @@
+---
+title: "jsQuestPlusHistogram"
+author: "Daiichiro Kuroki"
+date: "2022/1/19"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+# jsQuestPlus simulation
+
+We show below how accurately jsQuestPlus could estimate the psychometric parameters by the simulations described in our paper.
+
+We obtained simulation data of 37 browser–computer combinations. In other words, we obtained 37 estimates for each psychometric parameter. Each histogram shows the frequency of the 37 estimates.
+
+## Simulation 1
+
+This simulation corresponds to the example 1 of Watson (2017): Estimation of contrast threshold {1, 1, 2}
+
+- The number of stimulus parameters is 1
+- The number of psychometric parameters is 1
+- The number of responses is 2
+- The number of samples is 3362
+
+### Threshold (True value is -20)
+
+*Possible values: -40, -39, -38, ..., -1, 0*
+
+```{r Simulation1}
+dat_jsqp <- read.table('jsQuestPlus_20220111.csv', sep=",", header=T) 
+sub_dat <- subset(dat_jsqp, trial_index == 1) # Retrieve 37 estimates from raw data.
+summary(sub_dat$ex1_threshold)
+hist(sub_dat$ex1_threshold, seq(-39.5,0))
+```
+
+## Simulation 2
+
+This simulation corresponds to the example 2 of Watson (2017): Estimation of contrast threshold, slope, and lapse {1, 3, 2} 
+
+- The number of stimulus parameters is 1
+- The number of psychometric parameters is 3
+- The number of responses is 2
+- The number of samples is 67240
+
+### Threshold (True value is -20)
+
+*Possible values: -40, -39, -38, ..., -1, 0*
+
+```{r Simulation2_threshold}
+summary(sub_dat$ex2_threshold)
+hist(sub_dat$ex2_threshold, seq(-39.5,0))
+```
+
+### Slope (True value is 3)
+
+*Possible values: 2, 3, 4, 5*
+
+```{r Simulation2_slope}
+summary(sub_dat$ex2_slope)
+hist(sub_dat$ex2_slope, seq(1.5, 5.5))
+```
+
+
+### Lapse (True value is 0.02)
+
+*Possible values: 0, 0.01, 0.02, 0.03, 0.04*
+
+```{r Simulation2_lapse}
+summary(sub_dat$ex2_lapse)
+hist(sub_dat$ex2_lapse, seq(-0.005,0.045,0.01))
+```
+
+## Simulation 3
+
+This simulation corresponds to the example 4 of Watson (2017): Contrast sensitivity function {2, 3, 2}
+
+- The number of stimulus parameters is 2
+- The number of psychometric parameters is 3
+- The number of responses is 2
+- The number of samples is 660660
+
+### Threshold (True value is -35)
+
+*Possible values: -50, -49, -48, ..., -31, -30*
+
+```{r Simulation3_threshold}
+summary(sub_dat$ex4_threshold)
+hist(sub_dat$ex4_threshold, seq(-51,-29,2))
+```
+
+### C0 (True value is -50)
+
+*Possible values: -60, -58, -56, ..., -42, -40*
+
+```{r Simulation3_c0}
+summary(sub_dat$ex4_c0)
+hist(sub_dat$ex4_c0, seq(-61,-39,2))
+```
+
+### Cf (True value is 1.2)
+
+*Possible values: 0.8, 1.0, 1.2, 1.4, 1.6*
+
+```{r Simulation3_cf}
+summary(sub_dat$ex4_cf)
+hist(sub_dat$ex4_cf, seq(0.7,1.7,0.2))
+```
+
+## Simulation 4
+
+This simulation corresponds to the example 5 of Watson (2017): Spatiotemporal contrast sensitivity {3, 4, 2} 
+
+- The number of stimulus parameters is 3
+- The number of psychometric parameters is 4
+- The number of responses is 2
+- The number of samples is 911250
+
+### Threshold (True value is -40)
+
+*Possible values: -50, -45, -40, -35, -30*
+
+```{r Simulation4_threshold}
+summary(sub_dat$ex5_threshold)
+hist(sub_dat$ex5_threshold, seq(-52.5, -27.5, 5))
+```
+
+### C0 (True value is -50)
+
+*Possible values: -60, -55, -50, -45, -40*
+
+```{r Simulation4_c0}
+summary(sub_dat$ex5_c0)
+hist(sub_dat$ex5_c0, seq(-62.5, -37.5, 5))
+```
+
+### Cf (True value is 1.2)
+
+*Possible values: 0.8, 1.0, 1.2, 1.4, 1.6*
+
+```{r Simulation4_cf}
+summary(sub_dat$ex5_cf)
+hist(sub_dat$ex5_cf, seq(0.7,1.7,0.2))
+```
+
+### Cw (True value is 1.0)
+
+*Possible values: 0.8, 1.0, 1.2, 1.4, 1.6*
+
+```{r Simulation4_cw}
+summary(sub_dat$ex5_cw)
+hist(sub_dat$ex5_cw, seq(0.7,1.7,0.2))
+```
