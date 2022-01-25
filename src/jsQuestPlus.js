@@ -184,11 +184,17 @@ class jsquest {
 
 
     
-    getStimParams(){
-        // Compute the product of likelihood and current posterior array
-        // Structure of likelihoods: response x stimulus (row) x PF parameters (column)
+    getStimParams(num){
+        // Arrange the entropies in ascending order and return the parameters of the stimuli in the specified position.
 
-        const index = jsquest.find_min_index(this.expected_entropies_by_stim)
+        let index
+        if (typeof num === 'undefined' || num === 1){
+            index = jsquest.find_min_index(this.expected_entropies_by_stim)
+        } else {
+            const tmp_array = numeric.linspace(0, this.expected_entropies_by_stim.length-1)
+            tmp_array.sort((a, b) => this.expected_entropies_by_stim[a] - this.expected_entropies_by_stim[b])
+            index = tmp_array[num - 1]
+        }
         let stim = this.comb_stim_params[index]
         return stim
     }
