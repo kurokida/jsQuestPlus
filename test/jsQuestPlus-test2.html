@@ -1,9 +1,7 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <script src="https://www.hes.kyushu-u.ac.jp/~kurokid/QUEST/dist/jsQUEST.js"></script>
-        <script src="../numeric.js"></script>
-        <script src="../src/jsQuestPlus.js"></script>
+        <script src="../dist/jsQuestPlus.js"></script>
     </head>
 <body>
     <p>This program simulates the QUEST method: a Bayesian adaptive psychometric method (<a href="https://link.springer.com/article/10.3758/BF03202828">Watson & Pelli, 1983</a>).</p>
@@ -23,7 +21,7 @@
 
     function func_resp0(freq, contrast, threshold, c0, cf){
         const max = Math.max(threshold, c0 + cf*freq)
-        return jsquest.weibull(contrast, max, 3, 0.5, 0.01)
+        return jsQuestPlus.weibull(contrast, max, 3, 0.5, 0.01)
     }
 
     // function func_resp1(stim, threshold, slope, guess, lapse) {
@@ -31,20 +29,18 @@
         return 1 - func_resp0(freq, contrast, threshold, c0, cf) 
     }
 
-    const spatial_frequency = jsquest.getArray_with_fix_interval(0, 2, 40)
-    const contrast = jsquest.getArray_with_fix_interval(-50, 2, 0)
-    // const threshold = jsquest.getArray_with_fix_interval(-30, -2, -50)
-    // const c0 = jsquest.getArray_with_fix_interval(-40, -2, -60)
-    const threshold = jsquest.getArray_with_fix_interval(-50, 2, -30)
-    const c0 = jsquest.getArray_with_fix_interval(-60, 2, -40)
-    const cf = jsquest.getArray_with_fix_interval(0.8, 0.2, 1.6)
+    const spatial_frequency = jsQuestPlus.array(0, 2, 40)
+    const contrast = jsQuestPlus.array(-50, 2, 0)
+    const threshold = jsQuestPlus.array(-50, 2, -30)
+    const c0 = jsQuestPlus.array(-60, 2, -40)
+    const cf = jsQuestPlus.array(0.8, 0.2, 1.6)
 
     const simulated_answers = [1, 0, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 0, 0, 1, 1, 1, 1, 1, 1, 1, 0, 0, 1, 1, 1]
     const simulated_stim = [[40, 0], [40, -4], [34, 0], [36, 0], [0, -38], [38, 0], [0, -40], [38, 0], [18, -26], [18, -26], 
         [40, 0], [0, -36], [0, -36], [40, 0], [20, -26], [20, -26], [40, -2], [22, -26], [40, -6], [20, -26], [40, 0], 
         [18, -26], [40, 0], [18, -26], [0, -32], [0, -32], [0, -34], [0, -34], [40, 0], [18, -26], [38, 0], [18, -26]]
 
-    const jsqp = new jsquest([func_resp0, func_resp1], [spatial_frequency, contrast], [threshold, c0, cf], [0,1])
+    const jsqp = new jsQuestPlus([func_resp0, func_resp1], [spatial_frequency, contrast], [threshold, c0, cf])
     console.log(jsqp)
 
     console.log(simulated_answers.length)
@@ -82,7 +78,7 @@
     // const estimates_median = jsqp.getEstimates('median')
     // console.log(estimates_median)
     //   Matlab retruns -38, -56, 1.4
-    //   jsQUEST returns -32, -56, 1.4
+    //   jsQuestPlus returns -32, -56, 1.4
 
 
 </script>
