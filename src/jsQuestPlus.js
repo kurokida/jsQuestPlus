@@ -229,9 +229,8 @@ class jsquest {
                 const posterior_times_proportions = numeric.mul(data.normalized_posteriors, proportions_at_PF_params)
                 const expected_outcomes = numeric.sum(posterior_times_proportions)
                 if (expected_outcomes === 0) {
-                    alert('Divided by zero.')
-                    console.error('Divided by zero.')
-                    this.nAlerts++
+                    alert('update_entropy_by_stim Error: Divided by zero.')
+                    console.error('update_entropy_by_stim Error: Divided by zero.')
                 }
                 const posterior = numeric.div(posterior_times_proportions, expected_outcomes)
                 // const tmp_entropy = numeric.mul(posterior, numeric.log(posterior)) // Note that log2 is used in qpArrayEntropy
