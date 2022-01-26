@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <script src="../dist/jsQuestPlus.js"></script>
+    </head>
+<body>
+    <p>This program simulates <a href="https://doi.org/10.1167/17.3.10">Watson (2017)'s</a> second example: "Estimation of contrast threshold, slope, and lapse {1, 3, 2}".</p>
+    <p>Please open the JavaScript console window in your browser. If you are using Chrome on Windows, press Ctrl + Shift + I to open the console.</p>
+</body>
+<script>
+    a = jsQuestPlus.linspace(1, 10, 5)
+    b = jsQuestPlus.mul(a, -2)
+    console.log(a)
+    console.log(b)
+    console.log(jsQuestPlus.mul(a, b))
+    console.log(jsQuestPlus.abs(b))
+    console.log(jsQuestPlus.add(a, b))
+    console.log(jsQuestPlus.cos(a))
+    console.log(jsQuestPlus.dim(a))
+    console.log(jsQuestPlus.dot(a, b))
+    console.log(jsQuestPlus.exp(a))
+    console.log(jsQuestPlus.floor(a))
+    console.log(jsQuestPlus.isFinite([10,NaN,Infinity]))
+    console.log(jsQuestPlus.isNaN([10,NaN,Infinity]))
+    console.log(jsQuestPlus.log(a))
+    console.log(jsQuestPlus.mod(a, b))
+    console.log(jsQuestPlus.pow(a, b))
+    console.log(jsQuestPlus.round(a))
+    console.log(jsQuestPlus.sin(a))
+    console.log(jsQuestPlus.sqrt([16, 25]))
+    console.log(jsQuestPlus.sub(a, b))
+    console.log(jsQuestPlus.sum(a))
+    console.log(jsQuestPlus.transpose([[1,2,3],[4,5,6]]))
+    console.log(jsQuestPlus.div(a, b))
+    
+</script>
+</html>

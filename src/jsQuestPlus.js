@@ -248,25 +248,61 @@ class jsquest {
 
     // Wrappers for the numeric.js
     static linspace = numeric.linspace
-    static abs = numeric.abs
-    static add = numeric.add
-    static cos = numeric.cos
-    static dim = numeric.dim
-    static div = numeric.div
+    static abs(a) {
+        return numeric.abs(a)
+    }
+    static add(a, b){
+        return numeric.add(a, b)
+    }
+    static cos(a){
+        return numeric.cos(a)
+    }
+    static dim(a){
+        return numeric.dim(a)
+    }
+    static div(a, b) {
+        return numeric.div(a, b)
+    }
     static dot = numeric.dot
-    static exp = numeric.exp
-    static floor = numeric.floor
-    static isFinite = numeric.isFinite
-    static isNaN = numeric.isNaN
-    static log = numeric.log
-    static mod = numeric.mod
-    static mul = numeric.mul
-    static pow = numeric.pow
-    static round = numeric.round
-    static sin = numeric.sin
-    static sqrt = numeric.sqrt
-    static sub = numeric.sub
-    static sum = numeric.sum
+    static exp(a){
+        return numeric.exp(a)
+    }
+    static floor(a){
+        return numeric.floor(a) 
+    }
+    static isFinite(a){
+        return numeric.isFinite(a)
+    }
+    static isNaN(a){
+        return numeric.isNaN(a)
+    }
+    static log(a){
+        return numeric.log(a)
+    }
+    static mod(a, b){
+        return numeric.mod(a, b)
+    }
+    static mul(a, b){
+        return numeric.mul(a, b)
+    }
+    static pow(a, b){
+        return numeric.pow(a, b)
+    }
+    static round(a){
+        return numeric.round(a)
+    }
+    static sin(a){
+        return numeric.sin(a)
+    }
+    static sqrt(a){
+        return numeric.sqrt(a)
+    }
+    static sub(a, b){
+        return numeric.sub(a, b)
+    }
+    static sum(a){
+        return numeric.sum(a)
+    }
     static transpose = numeric.transpose
 
     static log2(array){
