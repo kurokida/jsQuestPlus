@@ -10,7 +10,11 @@ console.log('jsQuestPlus Version 1.0.0')
 
 class jsquest {
     // PF menas Psychometric Functions
-    constructor(PF, stim_params, PF_params){
+    constructor(settings){
+        const PF = settings.psych_func
+        const stim_params = settings.stim_samples
+        const PF_params = settings.psych_samples
+
         this.nAlerts = 0
 
         this.PF = PF
@@ -49,6 +53,17 @@ class jsquest {
             }
             priors.push(numeric.div(unit_vector, param.length))
         })
+
+        if (typeof settings.priors !== 'undefined'){
+            settings.priors.forEach((prob_array, index) => {
+                if (Array.isArray(prob_array)){
+                    if (prob_array.length !== this.PF_params[index].length) alert(`setPrior Error: The length of the probability array ${prob_array.length} does not match the length of the parameter ${this.PF_params[index].length}.`)
+                    if (Math.abs(numeric.sum(prob_array) - 1) > 0.01) alert(`setPrior Error: The sum of the probability array is not 1. The sum is ${numeric.sum(prob_array)}.`)
+                    priors[index] = prob_array
+                }
+            })
+        }
+
         this.priors = priors
         const comb_priors = priors.reduce(jsquest.combvec)
 
@@ -70,7 +85,13 @@ class jsquest {
             this.nAlerts++
         }
         this.normalized_priors = numeric.div(mulitiplied_priors, sum_of_priors)
-        this.normalized_posteriors = this.normalized_priors
+
+        if (typeof settings.mult_prior !== 'undefined') {
+            if (settings.mult_prior.length !== this.normalized_priors.length) alert(`mult_prior Error: The length of the mult_prior array ${settings.mult_prior.length} should be ${this.normalized_priors.length}.`)
+            this.normalized_posteriors = settings.mult_prior
+        } else {
+            this.normalized_posteriors = this.normalized_priors
+        }
 
         this.responses = numeric.linspace(0, PF.length-1, PF.length)
                 

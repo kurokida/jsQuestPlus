@@ -3253,7 +3253,11 @@ console.log('jsQuestPlus Version 1.0.0');
 
 class jsquest {
     // PF menas Psychometric Functions
-    constructor(PF, stim_params, PF_params){
+    constructor(settings){
+        const PF = settings.psych_func;
+        const stim_params = settings.stim_samples;
+        const PF_params = settings.psych_samples;
+
         this.nAlerts = 0;
 
         this.PF = PF;
@@ -3292,6 +3296,17 @@ class jsquest {
             }
             priors.push(numeric.div(unit_vector, param.length));
         });
+
+        if (typeof settings.priors !== 'undefined'){
+            settings.priors.forEach((prob_array, index) => {
+                if (Array.isArray(prob_array)){
+                    if (prob_array.length !== this.PF_params[index].length) alert(`setPrior Error: The length of the probability array ${prob_array.length} does not match the length of the parameter ${this.PF_params[index].length}.`);
+                    if (Math.abs(numeric.sum(prob_array) - 1) > 0.01) alert(`setPrior Error: The sum of the probability array is not 1. The sum is ${numeric.sum(prob_array)}.`);
+                    priors[index] = prob_array;
+                }
+            });
+        }
+
         this.priors = priors;
         const comb_priors = priors.reduce(jsquest.combvec);
 
@@ -3313,7 +3328,13 @@ class jsquest {
             this.nAlerts++;
         }
         this.normalized_priors = numeric.div(mulitiplied_priors, sum_of_priors);
-        this.normalized_posteriors = this.normalized_priors;
+
+        if (typeof settings.mult_prior !== 'undefined') {
+            if (settings.mult_prior.length !== this.normalized_priors.length) alert(`mult_prior Error: The length of the mult_prior array ${settings.mult_prior.length} should be ${this.normalized_priors.length}.`);
+            this.normalized_posteriors = settings.mult_prior;
+        } else {
+            this.normalized_posteriors = this.normalized_priors;
+        }
 
         this.responses = numeric.linspace(0, PF.length-1, PF.length);
                 
@@ -3427,11 +3448,17 @@ class jsquest {
 
 
     
-    getStimParams(){
-        // Compute the product of likelihood and current posterior array
-        // Structure of likelihoods: response x stimulus (row) x PF parameters (column)
+    getStimParams(num){
+        // Arrange the entropies in ascending order and return the parameters of the stimuli in the specified position.
 
-        const index = jsquest.find_min_index(this.expected_entropies_by_stim);
+        let index;
+        if (typeof num === 'undefined' || num === 1){
+            index = jsquest.find_min_index(this.expected_entropies_by_stim);
+        } else {
+            const tmp_array = numeric.linspace(0, this.expected_entropies_by_stim.length-1);
+            tmp_array.sort((a, b) => this.expected_entropies_by_stim[a] - this.expected_entropies_by_stim[b]);
+            index = tmp_array[num - 1];
+        }
         let stim = this.comb_stim_params[index];
         return stim
     }
@@ -3466,9 +3493,8 @@ class jsquest {
                 const posterior_times_proportions = numeric.mul(data.normalized_posteriors, proportions_at_PF_params);
                 const expected_outcomes = numeric.sum(posterior_times_proportions);
                 if (expected_outcomes === 0) {
-                    alert('Divided by zero.');
-                    console.error('Divided by zero.');
-                    this.nAlerts++;
+                    alert('update_entropy_by_stim Error: Divided by zero.');
+                    console.error('update_entropy_by_stim Error: Divided by zero.');
                 }
                 const posterior = numeric.div(posterior_times_proportions, expected_outcomes);
                 // const tmp_entropy = numeric.mul(posterior, numeric.log(posterior)) // Note that log2 is used in qpArrayEntropy
@@ -3485,25 +3511,61 @@ class jsquest {
 
     // Wrappers for the numeric.js
     static linspace = numeric.linspace
-    static abs = numeric.abs
-    static add = numeric.add
-    static cos = numeric.cos
-    static dim = numeric.dim
-    static div = numeric.div
+    static abs(a) {
+        return numeric.abs(a)
+    }
+    static add(a, b){
+        return numeric.add(a, b)
+    }
+    static cos(a){
+        return numeric.cos(a)
+    }
+    static dim(a){
+        return numeric.dim(a)
+    }
+    static div(a, b) {
+        return numeric.div(a, b)
+    }
     static dot = numeric.dot
-    static exp = numeric.exp
-    static floor = numeric.floor
-    static isFinite = numeric.isFinite
-    static isNaN = numeric.isNaN
-    static log = numeric.log
-    static mod = numeric.mod
-    static mul = numeric.mul
-    static pow = numeric.pow
-    static round = numeric.round
-    static sin = numeric.sin
-    static sqrt = numeric.sqrt
-    static sub = numeric.sub
-    static sum = numeric.sum
+    static exp(a){
+        return numeric.exp(a)
+    }
+    static floor(a){
+        return numeric.floor(a) 
+    }
+    static isFinite(a){
+        return numeric.isFinite(a)
+    }
+    static isNaN(a){
+        return numeric.isNaN(a)
+    }
+    static log(a){
+        return numeric.log(a)
+    }
+    static mod(a, b){
+        return numeric.mod(a, b)
+    }
+    static mul(a, b){
+        return numeric.mul(a, b)
+    }
+    static pow(a, b){
+        return numeric.pow(a, b)
+    }
+    static round(a){
+        return numeric.round(a)
+    }
+    static sin(a){
+        return numeric.sin(a)
+    }
+    static sqrt(a){
+        return numeric.sqrt(a)
+    }
+    static sub(a, b){
+        return numeric.sub(a, b)
+    }
+    static sum(a){
+        return numeric.sum(a)
+    }
     static transpose = numeric.transpose
 
     static log2(array){
