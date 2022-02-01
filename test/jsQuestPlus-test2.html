@@ -40,7 +40,12 @@
         [40, 0], [0, -36], [0, -36], [40, 0], [20, -26], [20, -26], [40, -2], [22, -26], [40, -6], [20, -26], [40, 0], 
         [18, -26], [40, 0], [18, -26], [0, -32], [0, -32], [0, -34], [0, -34], [40, 0], [18, -26], [38, 0], [18, -26]]
 
-    const jsqp = new jsQuestPlus([func_resp0, func_resp1], [spatial_frequency, contrast], [threshold, c0, cf])
+    const jsqp = new jsQuestPlus({
+        psych_func: [func_resp0, func_resp1],
+        stim_samples: [spatial_frequency, contrast],
+        psych_samples: [threshold, c0, cf],
+    })
+
     console.log(jsqp)
 
     console.log(simulated_answers.length)
