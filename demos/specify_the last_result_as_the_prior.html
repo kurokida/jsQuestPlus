@@ -62,13 +62,11 @@
     console.log(`After ${nTrials} trials for condition 1.`)
     console.log(`jsQuestPlus estimates to be: ${estimates1[0]}, ${estimates1[1]}, and ${estimates1[3]}.`)
 
-    const prior = jsqp1.normalized_posteriors // Store the PDF of condition 1 for condtion 2
-
     const jsqp2 = new jsQuestPlus({
         psych_func: [func_resp0, func_resp1],
         stim_samples: [contrast_samples],
         psych_samples: [threshold_samples, slope_samples, guess, lapse_samples],
-        mult_prior: prior // Specify a prior probability distribution
+        priors: jsqp1.posteriors // Specify the posteriors of the previous condition.
     })
     const estimates2 = jsqp2.getEstimates()
     console.log(`jsQuestPlus data for condition 2 was initialized.`)

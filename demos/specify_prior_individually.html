@@ -10,6 +10,10 @@
     <p>Please open the JavaScript console window in your browser. If you are using Chrome on Windows, press Ctrl + Shift + I to open the console.</p>
 </body>
 <script>
+    ////////////////////////////////////////////////////////////////////////////////////////
+    // Simulation1: where the prior distribution of the threshold is specified individually.
+    // 
+
     // Psychometric function corresponding to the first response (response = 0)
     // You can specify the function or use the weibull/normcdf function jsQuest provides.
     function func_resp0(stim, threshold, slope, guess, lapse) {
@@ -36,14 +40,15 @@
     const lapse_samples = jsQuestPlus.array(0, 0.01, 0.04) // [0, 0.01, 0.02, 0.03, 0.04]
 
     // Example calculation for the prior PDF of threshold.
-    const tmp = jsQuestPlus.linspace(1, threshold_samples.length)
-    const threshold_prior = jsQuestPlus.div(tmp, jsQuestPlus.sum(tmp))
+    // Assume a Gaussian function with a mean of -18 and a standard deviation of 2.
+    const threshold_prior = jsQuestPlus.gauss(threshold_samples, -18, 2)
 
     const jsqp = new jsQuestPlus({
         psych_func: [func_resp0, func_resp1],
         stim_samples: [contrast_samples],
         psych_samples: [threshold_samples, slope_samples, guess, lapse_samples],
-        priors: [threshold_prior, 1, 1, 1] // This should match the order of the psych_samples. To specify a uniform distribution (default), write 1.
+        priors: jsQuestPlus.set_prior([threshold_prior, slope_samples.length, guess.length, lapse_samples.length]),
+        // The order of the priors must match the order of the psych_samples. To specify a uniform distribution (default), write the length of the parameter.
     })
 
     console.log(`Check jsquest.priors in the console.`)
@@ -63,13 +68,41 @@
     for (let i = 0; i < nTrials; i++){
         const contrast = jsqp.getStimParams()
         const resp = simulate_observer(contrast) 
-        console.log(`Trial ${i+1}: Contrast = ${contrast}; Response = ${resp}`)
+        // console.log(`Trial ${i+1}: Contrast = ${contrast}; Response = ${resp}`)
         jsqp.update(contrast, resp)
     }
 
     const estimates = jsqp.getEstimates()
+    console.log(`***** The result of Simulation 1 *****`)
     console.log(estimates)
     console.log(`The true threshold, slope and lapse, were ${true_threshold}, ${true_slope}, and ${true_lapse}, respectively.`)
     console.log(`jsQuestPlus estimates to be: ${estimates[0]}, ${estimates[1]}, and ${estimates[3]}.`)
+
+    ////////////////////////////////////////////////////////////////
+    // Simulation2: where the prior distribution is not normalized
+    // 
+    lapse_prior = [0.3, 0.4, 0.5, 0.4, 0.3] // Note that the prior is not normalized.
+    const jsqp2 = new jsQuestPlus({
+        psych_func: [func_resp0, func_resp1],
+        stim_samples: [contrast_samples],
+        psych_samples: [threshold_samples, slope_samples, guess, lapse_samples],
+        priors: jsQuestPlus.set_prior([threshold_prior, slope_samples.length, guess.length, lapse_prior], false),
+        // If false is specified, no check for normalization of the prior distribution is performed.
+    })
+
+    for (let i = 0; i < nTrials; i++){
+        const contrast = jsqp2.getStimParams()
+        const resp = simulate_observer(contrast) 
+        // console.log(`Trial ${i+1}: Contrast = ${contrast}; Response = ${resp}`)
+        jsqp2.update(contrast, resp)
+    }
+
+    const estimates2 = jsqp2.getEstimates()
+    console.log(`***** The result of Simulation 2 *****`)
+    console.log(estimates2)
+    console.log(`The true threshold, slope and lapse, were ${true_threshold}, ${true_slope}, and ${true_lapse}, respectively.`)
+    console.log(`jsQuestPlus estimates2 to be: ${estimates2[0]}, ${estimates2[1]}, and ${estimates2[3]}.`)
+
+
 </script>
 </html>

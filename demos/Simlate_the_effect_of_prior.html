@@ -53,14 +53,14 @@
 
     console.log(`The true threshold, slope and lapse, were ${true_threshold}, ${true_slope}, and ${true_lapse}, respectively.`)
 
-    let prior = undefined
+    let current_prior = undefined
 
     for (let i = 0; i < 50; i++){
         const jsqp = new jsQuestPlus({
             psych_func: [func_resp0, func_resp1],
             stim_samples: [contrast_samples],
             psych_samples: [threshold_samples, slope_samples, guess, lapse_samples],
-            mult_prior: prior
+            priors: current_prior
         })
 
         const nTrials = 64 // This is identical to that of Watson (2017)
@@ -75,7 +75,7 @@
 
         if (prior_flag){
             // Store the PDF for the next simulation.
-            prior = jsqp.normalized_posteriors
+            current_prior = jsqp.posteriors
         }
     }
 
