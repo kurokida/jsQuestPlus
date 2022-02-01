@@ -426,6 +426,19 @@ class jsquest {
         return numeric.linspace(start, adjusted_end, tmp+1)
     }
 
+    // exp((-1/2) * ((x_array - mean)/sd)^2)
+    static gauss(x_array, mean, sd, norm_flag){
+        const tmp1 = numeric.div(numeric.sub(x_array, mean), sd)
+        const tmp2 = numeric.pow(tmp1, 2)
+        const tmp3 = numeric.exp(numeric.mul(-0.5, tmp2))
+
+        if (typeof norm_flag === 'undefined' || norm_flag){
+            return numeric.div(tmp3, numeric.sum(tmp3))
+        } else {
+            return tmp3
+        }
+    }
+
     // Note that the following code is written in qpUnitizeArray
     //
     // %% Get summed values for each column
