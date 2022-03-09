@@ -45,7 +45,11 @@
         [18, -26], [40, 0], [18, -26], [0, -32], [0, -32], [0, -34], [0, -34], [40, 0], [18, -26], [38, 0], [18, -26]]
 
     // jsqp means jsQuestPlus. You can use any variable name you like.
-    const jsqp = new jsQuestPlus([func_resp0, func_resp1], [spatial_frequency, contrast], [threshold, c0, cf])
+    const jsqp = new jsQuestPlus({
+        psych_func:  [func_resp0, func_resp1], 
+        stim_samples: [spatial_frequency, contrast], 
+        psych_samples: [threshold, c0, cf]
+    })
     console.log(jsqp)
 
     console.log(simulated_answers.length)

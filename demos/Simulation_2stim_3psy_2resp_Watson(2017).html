@@ -38,7 +38,11 @@
     const cf = jsQuestPlus.array(0.8, 0.2, 1.6) // [0.8, 1, 1.2, 1.4, 1.6]
 
     // jsqp means jsQuestPlus. You can use any variable name you like.
-    const jsqp = new jsQuestPlus([func_resp0, func_resp1], [spatial_frequency, contrast], [threshold, c0, cf])
+    const jsqp = new jsQuestPlus({
+        psych_func:  [func_resp0, func_resp1], 
+        stim_samples: [spatial_frequency, contrast], 
+        psych_samples: [threshold, c0, cf]
+    })
     console.log(jsqp)
 
     // Note that the response is binominal.

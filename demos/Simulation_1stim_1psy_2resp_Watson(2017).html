@@ -39,9 +39,11 @@
     const lapse = [true_lapse]
 
     // jsqp means jsQuestPlus. You can use any variable name you like.
-    const jsqp = new jsQuestPlus(
-        [func_resp0, func_resp1], [contrast_samples], [threshold_samples, slope, guess, lapse])
-
+    const jsqp = new jsQuestPlus({
+        psych_func:  [func_resp0, func_resp1], 
+        stim_samples: [contrast_samples], 
+        psych_samples: [threshold_samples, slope, guess, lapse]
+    })
     console.log(jsqp)
 
     // Note that the response is binominal.

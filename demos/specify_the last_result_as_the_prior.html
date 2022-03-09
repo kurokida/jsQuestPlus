@@ -59,7 +59,7 @@
         jsqp1.update(contrast, resp)
     }
     const estimates1 = jsqp1.getEstimates()
-    console.log(`After ${nTrials} trials for condition 1.`)
+    console.log(`${nTrials} trials conducted for condition 1.`)
     console.log(`jsQuestPlus estimates to be: ${estimates1[0]}, ${estimates1[1]}, and ${estimates1[3]}.`)
 
     const jsqp2 = new jsQuestPlus({
@@ -89,7 +89,7 @@
     }
     const estimates3 = jsqp2.getEstimates()
     console.log(`The true threshold, slope and lapse for condition 2, were ${true_threshold + 2}, ${true_slope}, and ${true_lapse}, respectively.`)
-    console.log(`After ${nTrials} trials.`)
+    console.log(`${nTrials} trials conducted for condtion 2.`)
     console.log(`jsQuestPlus estimates to be: ${estimates3[0]}, ${estimates3[1]}, and ${estimates3[3]}.`)
 
 </script>

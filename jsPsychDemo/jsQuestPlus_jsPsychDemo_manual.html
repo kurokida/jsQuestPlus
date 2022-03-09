@@ -3,6 +3,7 @@
   <head>
     <script src="https://unpkg.com/jspsych@7.1.2"></script>
     <script src="https://unpkg.com/@jspsych/plugin-html-button-response@1.1.0"></script>
+    <script src="https://unpkg.com/@jspsych/plugin-html-keyboard-response@1.1.0"></script>
     <script src="../dist/jsQuestPlus.js"></script>
     <link rel="stylesheet" href="https://unpkg.com/jspsych@7.1.2/css/jspsych.css">
   </head>
@@ -37,32 +38,29 @@
     const lapse_samples = jsQuestPlus.array (0, 0.01, 0.04) // [0, 0.01, 0.02, 0.03, 0.04]
     const guess = [0.5] // The parameter of guess is assumed as a single value.
 
-    const jsqp = new jsQuestPlus ([func_resp0, func_resp1], [contrast_samples], [threshold_samples, slope_samples, guess, lapse_samples])
+    const jsqp = new jsQuestPlus({
+        psych_func:  [func_resp0, func_resp1], 
+        stim_samples: [contrast_samples], 
+        psych_samples: [threshold_samples, slope_samples, guess, lapse_samples]
+    })
 
     let trial_num = 1
-    const trialsDesired = 64
+    const trialsDesired = 10
+
+    let stim;
 
     const trial = {
-        type: jsPsychHtmlButtonResponse,
-        stimulus: '',
-        choices: ['You do not need to click this button.'],
-        trial_duration: 100, // For automation
-        on_start(trial){
-            // These values are used for the simulation only and are consistent with the values described in Watson (2017).
-            const true_threshold = -20
-            const true_slope = 3
-            const true_guess = 0.5
-            const true_lapse = 0.02
-
-            const stim = jsqp.getStimParams()
-
-            // In an actual experiment, simply assign 0 or 1 depending on the response.
-            const response = jsQuestPlus.simulate_weibull_two_resp(stim, true_threshold, true_slope, true_guess, true_lapse)
-
+        type: jsPsychHtmlKeyboardResponse,
+        stimulus: function(){
+            stim = jsqp.getStimParams()
+            // Return the stimulus with the parameters suggested by jsQuestPlus.
+            return `<p>Simulation trial = ${trial_num}/${trialsDesired}</p>
+                <p>Contrast = ${stim}</p><p>Press the F or J key.</p>`
+        },
+        choices: ['f', 'j'],
+        on_finish(data){
+            const response = jsPsych.pluginAPI.compareKeys(data.response, 'f') ? 1 : 0;
             jsqp.update(stim, response)
-
-            trial.stimulus = `<p>Simulation trial = ${trial_num}/${trialsDesired}</p>
-                <p>Contrast = ${stim}</p><p>The response by the simulator is ${response}</p>`
         }
     }
 
