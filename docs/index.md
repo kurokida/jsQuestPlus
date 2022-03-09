@@ -1,7 +1,7 @@
 # QUEST+
 
 QUEST+ ([Watson, 2017](https://doi.org/10.1167/17.3.10)) is an extension of QUEST ([Watson & Pelli, 1983](https://doi.org/10.3758/BF03202828))
-that can deal with multiple stimulus parameters, multiple psychometric parameters, and more than two responses options. The jsQuestPlus JavaScript library allows researchers to use the QUEST+ method in online experiments. [It works in combination with existing online experimental tools such as jsPsych (de Leeuw, 2015), PsychoJS (Peirce et al., 2019), and lab.js (Henninger et al., 2019)](integration.md), and should work with other experimental tools like OpenSesame/OSWeb (Mathôt et al., 2012) and Gorilla (Anwyl-Irvine, Dalmaijer, et al., 2021). 
+that can deal with multiple stimulus parameters, multiple psychometric parameters, and more than two responses options. The jsQuestPlus JavaScript library allows researchers to use the QUEST+ method in online experiments. [It works in combination with existing online experimental tools such as jsPsych (de Leeuw, 2015), PsychoJS (Peirce et al., 2019), and lab.js (Henninger et al., 2021)](integration.md), and should work with other experimental tools like OpenSesame/OSWeb (Mathôt et al., 2012) and Gorilla (Anwyl-Irvine, Dalmaijer, et al., 2021). 
 
 # How to use
 
@@ -22,7 +22,7 @@ import {jsquest} from "./jsQuestPlus.module.js";
 
 ## Specify psychometric functions
 
-To initialize the QUEST+ data, the psychometric functions corresponding to each response must be specified. For example, the function representing probabilities of incorrect responses (response = 0) in a 2-Alternative Forced-Choice (2AFC) task can be written as follows.
+To initialize the QUEST+ data, the psychometric functions corresponding to each response must be specified. For example, the function representing probabilities of incorrect responses (response = 0) in a 2-Alternative Forced-Choice task can be written as follows.
 
 ```javascript
 function func_resp0 (stim, threshold, slope, guess, lapse) {

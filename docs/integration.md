@@ -49,7 +49,7 @@ const loop_node = {
 
 ```
  
-We recommend to use jsQuestPlus in conjunction with the psychophysics plugin (Kuroki, 2021). Using this plugin, the experimenter can more easily present images, lines, rectangles, circles, sounds, moving objects, and Gabor patches, and the timing accuracy will be improved. Note, however, that this plugin does not improve the timing accuracy of moving objects or sound files.
+We recommend to use jsQuestPlus in conjunction with [the psychophysics plugin](https://jspsychophysics.hes.kyushu-u.ac.jp/). Using this plugin, the experimenter can more easily present images, lines, rectangles, circles, sounds, moving objects, and Gabor patches, and the timing accuracy will be improved. Note, however, that this plugin does not improve the timing accuracy of moving objects or sound files.
 
 ## PsychoPy
 
