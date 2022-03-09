@@ -1,122 +1,127 @@
-# jsQUEST: A Bayesian adaptive psychometric method for measuring thresholds in online experiments.
+# QUEST+
 
-Using adaptive psychometric procedures, the experimenter can determine the stimulus intensity based on the outcome of the preceding trials. Watson and Pelli (1983) reported QUEST which uses a Bayesian method to estimate the position of the psychometric function. jsQUEST is a translation of the MATLAB-based QUEST into JavaScript for online experiments. The source code is available on [GitHub](https://github.com/kurokida/jsQUEST).
+QUEST+ ([Watson, 2017](https://doi.org/10.1167/17.3.10)) is an extension of QUEST ([Watson & Pelli, 1983](https://doi.org/10.3758/BF03202828))
+that can deal with multiple stimulus parameters, multiple psychometric parameters, and more than two responses options. The jsQuestPlus JavaScript library allows researchers to use the QUEST+ method in online experiments. [It works in combination with existing online experimental tools such as jsPsych (de Leeuw, 2015), PsychoJS (Peirce et al., 2019), and lab.js (Henninger et al., 2019)](integration.md), and should work with other experimental tools like OpenSesame/OSWeb (Mathôt et al., 2012) and Gorilla (Anwyl-Irvine, Dalmaijer, et al., 2021). 
 
-# A psychometric function assuming the Weibull distribution. 
+# How to use
 
-Figure 1 shows a psychophysical function which assumes the Weibull distribution. You can also see this graph in [the demo](https://www.hes.kyushu-u.ac.jp/~kurokid/QUEST/jsPsychDemo/jsQUEST_jsPsychDemo.html). 
+This section describes how to use jsQuestPlus for [Watson's second example: "Estimation of contrast threshold, slope, and lapse {1, 3, 2}"](https://jov.arvojournals.org/article.aspx?articleid=2611972#159437865).
 
-![Weibull](./images/Weibull_function.png)
+## Importing jsQuestPlus
+The library can be imported either as a UMD module or as an ES6 module.
 
-*Figure 1. A psychophysical function assuming the Weibull distribution.*
+### As a UMD module
+<UMD example here>
 
-This graph has been drawn using the following default values:
-
-- The actual (true) threshold you want to know: tActual (Default: -2)
-- Your guess about the threshold: tGuess (Default: -1)
-- Your guess about the standard deviation of the threshold: tGuessSd (Default: 2)
-- Threshold criterion expressed as probability: pThreshold (Default: 0.82)
-- The parameters of a Weibull psychometric function: Beta (Default: 3.5). The slope of the psychometric function.
-- The parameters of a Weibull psychometric function: Delta (Default: 0.01). The probability of making mistakes by participants at intensities significantly greater than the threshold.
-- The parameters of a Weibull psychometric function: Gamma (Default: 0.5). The probability of a success (a response of YES) at zero intensity.
-
-The pink circle represents the actual threshold (tActual). The experimenter does not usually know the value, and wants to know it by conducting the experiment. The tActual is used only for simulation, and is not necessarily required to run QUEST. 
-
-The tGuess determines the horizontal position of the psychometric function, while the Beta, Delta, and Gamma determines the shape of the psychometric function. The tGuessSd affects the probability density function (PDF) of thresholds.
-
-The probability of correct/YES answers is about 0.5 at (A) the x-axis of -2.5, and is about 1.0 at (B) the x-axis of -1.5. The intensity of (B) is 10 times larger than that of (A) because the x-axis is the log scale. By using the default values (Beta = 3.5, Delta = 0.01, Gamma = 0.5), the experimenter is assuming such a psychophysical function.
-
-# Stimulus intensity
-
-Before beggining an experiment, the experimenter needs to determine what the intensity of the stimulus is. For example, it could be the luminance, color, size, length, spatial/temporal frequency, or number of dots. The experimenter is free to determine the intensity of the stimulus as long as it is considered to fit the psychophysical function.
-
-# Threshold criterion expressed as probability (pThreshold)
-
-Specify the probability that the experimenter is interested in. It is conventionally 75% for the two-alternative forced choice task, and 50% for the yes/no task. The default is 82%.
-
-# Guess the threshold (tGuess)
-
-Estimate of the stimulus intensity that is expected to result in a response rate of pThreshold. The default is -1. Given that the x-axis is the log scale, the default means 10^(-1) = 0.1. The units are arbitrary. The symbol "^" means a power in this document.
-
-# Installation
-
-Write the following line in the head section.
-
-```html
-<script src="https://www.hes.kyushu-u.ac.jp/~kurokid/QUEST/dist/jsQUEST.js"></script>
+### As an ES6 module
+At the top of your script, add the following line.
+	
+```javascript
+import {jsquest} from "./jsQuestPlus.module.js";
 ```
 
-Or download the dist/jsQUEST.js file from [the repository](https://github.com/kurokida/jsQUEST) and include it using the script tag.
+## Specify psychometric functions
 
-If you want to use jsQUEST as an ES6 module, please refer to [the README](https://github.com/kurokida/jsQUEST).
-
-# How to use jsQUEST
-
-The usage of jsQUEST is the same as QUEST distributed as a part of Psychtoolbox. So, you can refer to [the help of Psychtoolbox](http://psychtoolbox.org/docs/Quest). Note the prefix "jsQUEST".
-
-At first, call the QuestCreate function like this.
-
-```javascript 
-myquest = jsQUEST.QuestCreate(tGuess, tGuessSd, pThreshold, beta, delta, gamma);
-```
-
-The QuestQuantile function returns a suggestion of stimulus intensity for the next trial. You can use the QuestMean or QuestMode functions instead of the QuestQuantile.
-
-```javascript 
-const tTest = jsQUEST.QuestQuantile(myquest);	
-```
-
-If the default values are used, the first call of the QuestQuantile function returns -0.65. Note that the difference between the returned value (-0.65) and tGuess(-1) is 0.35. The QuestQuantile proposes to present a stimulus with 10^0.35 = 2.24 times the intensity of the tGuess for the first trial. As long as the same Beta, Delta, and Gamma are used the difference between the first returned value and tGuess will be about 0.35, no matter what the value of tGuess is.
-
-The procedure of QUEST is easy to understand when the intensity of the stimulus is on a log scale, e.g. dB, while in other cases I recommend to think of it as follows. For example, if the experimenter predicts that the stimulus intensity of 150 pixels will result in a response rate of pThreshold (0.82), then tGuess should be log10(150) = 2.18. If the default values regarding Beta, Delta, and Gamma are used, the first call of QuestQuantile returns 2.53. Note that the difference between the returned value (2.18) and tGuess(2.53) is 0.35. This is the same as when tGuess is -1. The QuestQuantile proposes to present a stimulus with 10^0.35 = 2.24 times the intensity of tGuess. The intensity can be calculated in one of the two ways: (a) 150 * 2.24, or (b) 10^(2.53). The results of the two formulas are almost identical (about 338 pixels).
-
-## Update the PDF
+To initialize the QUEST+ data, the psychometric functions corresponding to each response must be specified. For example, the function representing probabilities of incorrect responses (response = 0) in a 2-Alternative Forced-Choice (2AFC) task can be written as follows.
 
 ```javascript
-myquest = jsQUEST.QuestUpdate(myquest, tTest, response); 
-// % Add the new datum (actual test intensity and observer response) to the database.
+function func_resp0 (stim, threshold, slope, guess, lapse) {
+    const tmp = slope * (stim - threshold)/20
+    return lapse - (guess + lapse -1) * Math.exp ( -Math.pow (10, tmp))
+}
 ```
 
-Update the PDF of thresholds by specifing the current stimulus intensity (tTest) and the response (YES/SUCCESS = 1 or NO/FAILURE = 0). The tTest is not necessarily the value suggested by QUEST. For example, there may be upper and lower limits of the stimulus intensity. If QUEST proposes a value that exceeds these limits, it can be changed to an appropriate value. The important thing is to update the PDF with the actual stimulus intensity (tTest) and the response.
-
-## Termination rules
-
-Watson and Pelli (1983) recommended to stop updating (a) when a confidence interval for the location of threshold is smaller than a specified size, or (b) after a fixed number of trials. Pelli's demo program (QuestDemo.m) updates the PDF 40 times.
-
-## Estimate of the threshold
-
-Finally, the experimenter can estimate the threshold and its standard deviation in the following way:
+This describes the Weibull function, which is also available in jsQuestPlus as `jsQuestPlus.weibull`. The function representing probabilities of correct responses (response = 1) in the task can be written as follows:
 
 ```javascript
-const threshold = jsQUEST.QuestMean(myquest); // % Recommended by Pelli (1989) and King-Smith et al. (1994). 
-const sd = jsQUEST.QuestSd(myquest);
+function func_resp1(stim, threshold, slope, guess, lapse) {
+    return 1 - func_resp0(stim, threshold, slope, guess, lapse) 
+}
 ```
 
-# Functions
+The func_resp0 and func_resp1 are complementary, in other words, they add up to 1.
 
-These are the links to the help of original MATLAB version of QUEST. 
+## Specify range of allowed parameter values
 
-- [QuestCreate](http://psychtoolbox.org/docs/QuestCreate)
-- [QuestUpdate](http://psychtoolbox.org/docs/QuestUpdate)
-- [QuestMean](http://psychtoolbox.org/docs/QuestMean)
-- [QuestMode](http://psychtoolbox.org/docs/QuestMode)
-- [QuestQuantile](http://psychtoolbox.org/docs/QuestQuantile)
-- [QuestSd](http://psychtoolbox.org/docs/QuestSd)
-- [QuestBetaAnalysis](http://psychtoolbox.org/docs/QuestBetaAnalysis)
-- [QuestP](http://psychtoolbox.org/docs/QuestP)
-- [QuestPdf](http://psychtoolbox.org/docs/QuestPdf)
-- [QuestRecompute](http://psychtoolbox.org/docs/QuestRecompute)
-- [QuestSimulate](http://psychtoolbox.org/docs/QuestSimulate)
-- [QuestTrials](http://psychtoolbox.org/docs/QuestTrials)
+Next, specify the range of possible values for the stimulus and psychometric parameters. These parameters must be specified as an array, also when they are single values, for which jsQuestPlus.linspace and jsQuestPlus.array can be used:
 
-The usage of jsQUEST is the same as that of the original QUEST except for the following points:
+```javascript
+// [-40, -39, -38, ..., -1, 0]
+const contrast_samples = jsQuestPlus.linspace (-40, 0)
+const threshold_samples = jsQuestPlus.linspace (-40, 0)
+// [2, 3, 4, 5]
+const slope_samples = jsQuestPlus.linspace (2, 5) 
+// [0, 0.01, 0.02, 0.03, 0.04]
+const lapse_samples = jsQuestPlus.array (0, 0.01, 0.04) 
+// The parameter of guess is assumed as a single value.
+const guess = [0.5]
+```
 
-- QuestBetaAnalysis does not support outputting to a file.
-- QuestMode returns an object with the 'mode' and 'pdf' properties.
-- QuestRecompute takes the third and fourth arguments. The third argument means the width of the chart, and the forth argument means the height of the chart.
-- QuestSimulate takes the fifth and sixth arguments. The fifth argument means the width of the chart, and the sixth argument means the height of the chart.
+Note that a larger number of samples will affect the execution time of the QUEST+ method.
 
-# References
+## Create jsQuestPlus instance
+After specifying the psychometric functions and possible parameters, initialize the QUEST+ data as follows:
 
-- [King-Smith, P. E., Grigsby, S. S., Vingrys, A. J., Benes, S. C., & Supowit, A. (1994). Efficient and unbiased modifications of the QUEST threshold method: Theory, simulations, experimental evaluation and practical implementation. Vision Research, 34(7), 885–912. ](https://doi.org/10.1016/0042-6989(94)90039-6)
-- [Watson, A. B., & Pelli, D. G. (1983). Quest: A Bayesian adaptive psychometric method. Perception & Psychophysics, 33(2). ](https://doi.org/10.3758/BF03202828)
+```javascript
+const jsqp = new jsQuestPlus({
+  psych_func:  [func_resp0, func_resp1], 
+  stim_samples: [contrast_samples], 
+  psych_samples: [threshold_samples, slope_samples, guess, lapse_samples]
+})
+```
+
+Here, jsqp is an abbreviation of jsQuestPlus, but any valid JavaScript variable name could be used instead. The jsQuestPlus constructor is passed an object with three properties: psych_func, stim_samples, and psych_samples. Note that the elements in the psych_samples array (i.e., threshold, slope, guess, and lapse) must be written in the order specified in the psychometric function declaration. 
+
+## Get and update stimulus parameters
+
+After completing the initialization, the stimulus parameters that are predicted to yield the most informative results at the next trial can be obtained as follows:
+
+```javascript
+const stim = jsqp.getStimParams()
+```
+
+The getStimParams function returns the stimulus parameter(s) that minimize(s) the expected entropies of the PDF of the psychometric parameters. The QUEST+ method recommends to present  the stimulus with the returned parameters and obtain the response. In the example task, the response is 0 or 1. The experimenter needs to carefully assign the number so as to correspond to the specified order of the psychometric functions. If a correct response (response = 1) is obtained, update the PDF and the expected entropies as follows:
+
+```javascript
+jsqp.update(stim, 1)
+```
+
+The presentation of stimuli, obtaining the responses, and updating of the data are repeated a predetermined number of times. Finally, the psychometric parameter estimates with the highest PDF can be obtained as follows:
+
+```javascript
+const estimates = jsqp.getEstimates()
+```
+
+The estimates array includes all the estimates of the psychometric parameters, that is, the threshold, slope, and lapse in this example.
+
+# Prior distribution of the PDF
+
+Although priors will be treated as a uniform probability over all psychometric parameter combinations by default, these can be specified individually.
+
+## How to specify prior distributions individually
+
+```javascript
+// Example calculation for the prior PDF of threshold.
+// Assume a Gaussian function with a mean of -18 and a standard deviation of 2.
+const threshold_prior = jsQuestPlus.gauss(threshold_samples, -18, 2)
+
+const jsqp = new jsQuestPlus({
+    psych_func: [func_resp0, func_resp1],
+    stim_samples: [contrast_samples],
+    psych_samples: [threshold_samples, slope_samples, guess, lapse_samples],
+    priors: jsQuestPlus.set_prior([threshold_prior, slope_samples.length, guess.length, lapse_samples.length]),
+    // The order of the priors must match the order of the psych_samples. 
+    // To specify a uniform distribution (default), write the length of the parameter.
+})
+```
+
+## How to use the previous jsQuestPlus data as a prior distribution
+
+```javascript
+const jsqp2 = new jsQuestPlus({
+    psych_func: [func_resp0, func_resp1],
+    stim_samples: [contrast_samples],
+    psych_samples: [threshold_samples, slope_samples, guess, lapse_samples],
+    priors: jsqp1.posteriors // Specify the posteriors of the previous condition.
+})
+```
