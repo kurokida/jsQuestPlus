@@ -47,17 +47,9 @@ This is the sample code for [jsPsych](https://github.com/jspsych/jsPsych/) users
 This section describes how to use jsQuestPlus for [Watson's second example: "Estimation of contrast threshold, slope, and lapse {1, 3, 2}"](https://jov.arvojournals.org/article.aspx?articleid=2611972#159437865). Before creating an instance of jsQuestPlus, we need to specify a number of parameters.
 
 ## Importing jsQuestPlus
-The library can be imported either as a UMD module or as an ES6 module.
-
-### As a UMD module
-<UMD example here>
-
-### As an ES6 module
-At the top of your script, add the following line.
-	
-```javascript
-import {jsquest} from "./jsQuestPlus.module.js";
-```
+Builds of the jsQuestPlus library can be found in [dist/](dist). There are two types of builds available:
+* **UMD module.** `jsQuestPlus.js` can be imported as AMD module, CommonJS module, or included via a script tag. It exposes the library as a global `jsQuestPlus`.
+* **ES module.** `jsQuestPlus.module.js` can be imported as ES module.
 
 ## Specify psychometric functions
 First, we specify the psychometric functions that correspond to each response. The function representing probabilities of incorrect responses in a 2-Alternative Forced-Choice (2AFC) task can be written as follows.
