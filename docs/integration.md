@@ -53,7 +53,7 @@ We recommend to use jsQuestPlus in conjunction with [the psychophysics plugin](h
 
 ## PsychoPy
 
-Preparing.
+jsQUEST can already be used in the PsychoPy builder (see [demo](https://gitlab.pavlovia.org/tpronk/demo_quest)). We are in the process of integrating jsQuestPlus as well. As a first step, we will perform an integration on a library level (similar to [this demo](https://gitlab.pavlovia.org/tpronk/demo_jsquest)). Next, jsQuestPlus will be integrated into the builder.
 
 ## lab.js
 We have prepared a template file to make jsQuestPlus work with lab.js, and sent [a pull request](https://github.com/FelixHenninger/lab.js/pull/142).
