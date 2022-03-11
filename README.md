@@ -3,6 +3,10 @@
 QUEST+ ([Watson, 2017](https://doi.org/10.1167/17.3.10)) is an extension of QUEST ([Watson & Pelli, 1983](https://doi.org/10.3758/BF03202828))
 that can deal with multiple stimulus parameters, multiple psychometric parameters, and more than two responses options. The jsQuestPlus JavaScript library allows researchers to use the QUEST+ method in online experiments.
 
+# How to use
+
+See [the GitHub page](https://kurokida.github.io/jsQuestPlus/).
+
 # Demonstrations
 
 The demos folder contains some sample code.
@@ -28,7 +32,7 @@ This is the sample code for [Watson's forth example: "Contrast sensitivity funct
 - [Run this example.](https://www.hes.kyushu-u.ac.jp/~kurokid/jsQuestPlus/demos/Example_2stim_3psy_2resp_Watson(2017).html)
 - [See the source code.](https://github.com/kurokida/jsQuestPlus/blob/main/demos/Example_2stim_3psy_2resp_Watson(2017).html)
 
-## Simulation_1stim_1psy_2resp_Watson(2017).html
+## Simulation_2stim_3psy_2resp_Watson(2017).html
 
 This file is the same as `Example_2stim_3psy_2resp_Watson(2017).html`, except that it simulates the observer's response. The final estimates will change slightly each time you run the program. 
 
@@ -37,14 +41,10 @@ This file is the same as `Example_2stim_3psy_2resp_Watson(2017).html`, except th
 
 ## jsPsychDemo/jsQuestPlus_jsPsychDemo.html
 
-This is the sample code for [jsPsych](https://github.com/jspsych/jsPsych/) users. This simulates [Watson's second example: "Estimation of contrast threshold, slope, and lapse {1, 3, 2}"](https://jov.arvojournals.org/article.aspx?articleid=2611972#159437865). 
+This is the sample code for [jsPsych](https://www.jspsych.org/7.1/) users. This simulates [Watson's second example: "Estimation of contrast threshold, slope, and lapse {1, 3, 2}"](https://jov.arvojournals.org/article.aspx?articleid=2611972#159437865). 
 
-- [Run this example.](https://www.hes.kyushu-u.ac.jp/~kurokid/jsQuestPlus/jsPsychDemo/jsQuestPlus_jsPsychDemo.html) 
-- [See the source code.](https://github.com/kurokida/jsQuestPlus/blob/main/jsPsychDemo/jsQuestPlus_jsPsychDemo.html)
-
-# How to use
-
-See [the GitHub page](https://kurokida.github.io/jsQuestPlus/).
+- [Run this example.](https://www.hes.kyushu-u.ac.jp/~kurokid/jsQuestPlus/jsPsychDemo/jsQuestPlus_jsPsychDemo_auto.html) 
+- [See the source code.](https://github.com/kurokida/jsQuestPlus/blob/main/jsPsychDemo/jsQuestPlus_jsPsychDemo_auto.html)
 
 # Convenience functions
 - The [numeric.js](https://github.com/sloisel/numeric) library performs matrix/array calculations at high speeds. This library is included in jsQuestPlus, with some of its functions available by prefixing them with `jsQuestPlus.`: `abs, add, cos, dim, div, dot, exp, floor, isFinite, isNaN, linspace, log, mod, mul, pow, round, sin, sqrt, sub, sum, transpose`.
