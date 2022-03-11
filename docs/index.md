@@ -8,7 +8,7 @@ that can deal with multiple stimulus parameters, multiple psychometric parameter
 This section describes how to use jsQuestPlus for [Watson's second example: "Estimation of contrast threshold, slope, and lapse {1, 3, 2}"](https://jov.arvojournals.org/article.aspx?articleid=2611972#159437865).
 
 ## Importing jsQuestPlus
-Builds of the jsQuestPlus library can be found in [dist/](dist). There are two types of builds available:
+Builds of the jsQuestPlus library can be found in [dist/](https://github.com/kurokida/jsQuestPlus/tree/main/dist). There are two types of builds available:
 * **UMD module.** `jsQuestPlus.js` can be imported as AMD module, CommonJS module, or included via a script tag. It exposes the library as a global `jsQuestPlus`.
 * **ES module.** `jsQuestPlus.module.js` can be imported as ES module.
 
@@ -23,7 +23,7 @@ function func_resp0 (stim, threshold, slope, guess, lapse) {
 }
 ```
 
-This describes the Weibull function, which is also available in jsQuestPlus as `jsQuestPlus.weibull`. The function representing probabilities of correct responses (response = 1) in the task can be written as follows:
+This describes the Weibull function, which is also available in jsQuestPlus as `jsQuestPlus.weibull`. The function representing probabilities of correct responses (response = 1) can be written as follows:
 
 ```javascript
 function func_resp1(stim, threshold, slope, guess, lapse) {
@@ -31,7 +31,7 @@ function func_resp1(stim, threshold, slope, guess, lapse) {
 }
 ```
 
-The func_resp0 and func_resp1 are complementary, in other words, they add up to 1.
+The func_resp0 and func_resp1 are complementary, in other words, the probabilities they return add up to 1. 
 
 ## Specify range of allowed parameter values
 
@@ -62,29 +62,29 @@ const jsqp = new jsQuestPlus({
 })
 ```
 
-Here, jsqp is an abbreviation of jsQuestPlus, but any valid JavaScript variable name could be used instead. The jsQuestPlus constructor is passed an object with three properties: psych_func, stim_samples, and psych_samples. Note that the elements in the psych_samples array (i.e., threshold, slope, guess, and lapse) must be written in the order specified in the psychometric function declaration. 
+Here, jsqp is an abbreviation of jsQuestPlus, but any valid JavaScript variable name could be used instead. The jsQuestPlus constructor should receive one argument, which is an object with three properties: psych_func, stim_samples, and psych_samples. Note that the elements in the psych_samples array (i.e., threshold, slope, guess, and lapse) must be written in the order specified in the psychometric function declaration. 
 
 ## Get and update stimulus parameters
 
 After completing the initialization, the stimulus parameters that are predicted to yield the most informative results at the next trial can be obtained as follows:
 
 ```javascript
-const stim = jsqp.getStimParams()
+stim = jsqp.getStimParams()
 ```
 
-The getStimParams function returns the stimulus parameter(s) that minimize(s) the expected entropies of the PDF of the psychometric parameters. The QUEST+ method recommends to present  the stimulus with the returned parameters and obtain the response. In the example task, the response is 0 or 1. The experimenter needs to carefully assign the number so as to correspond to the specified order of the psychometric functions. If a correct response (response = 1) is obtained, update the PDF and the expected entropies as follows:
+The getStimParams function returns the stimulus parameter(s) that minimize(s) the expected entropies of the PDF of the psychometric parameters. The QUEST+ method recommends presenting the stimulus with the returned parameters and obtain the response. In the example task, the response is 0 or 1. This response should match the index of the the corresponing psychometric function in the array passed to the jsQuestPlus constructor. If a correct response (response = 1) is obtained, update the PDF and the expected entropies as follows:
 
 ```javascript
 jsqp.update(stim, 1)
 ```
 
-The presentation of stimuli, obtaining the responses, and updating of the data are repeated a predetermined number of times. Finally, the psychometric parameter estimates with the highest PDF can be obtained as follows:
+The presentation of stimuli, obtaining the responses, and updating of the data are repeated a predetermined number of times. Finally, the psychometric parameter estimates with the highest posterior probability can be obtained as follows:
 
 ```javascript
 const estimates = jsqp.getEstimates()
 ```
 
-The estimates array includes all the estimates of the psychometric parameters, that is, the threshold, slope, and lapse in this example.
+The `estimates` array includes the estimates of each psychometric parameter, that is, the threshold, slope, and lapse in this example.
 
 # Prior distribution of the PDF
 
