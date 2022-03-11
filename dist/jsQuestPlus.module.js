@@ -3247,9 +3247,8 @@ numeric.MPStoLP = function MPStoLP(MPS) {
 };
 
 // This project is inspired by the following two projects.
-/* global numeric */
 
-console.log('jsQuestPlus Version 1.0.0');
+console.log('jsQuestPlus Version 2.0.0');
 
 class jsquest {
     // PF menas Psychometric Functions
@@ -3269,12 +3268,15 @@ class jsquest {
             }
         });        
 
+        const num_of_psy_samples = [];
         PF_params.forEach(param =>{
+            num_of_psy_samples.push(param.length);
+
             if (!Array.isArray(param)) {
                 alert('The parameters of the psychometric function must be specified as an array.');
                 this.nAlerts++;
             }
-        });        
+        });
 
         this.stim_params = stim_params;
         this.PF_params = PF_params;
@@ -3285,57 +3287,22 @@ class jsquest {
         this.comb_PF_params = PF_params.reduce(jsquest.combvec);
         
 
-        // For now, only certain prior distributions are supported
-        const priors = [];
-        PF_params.forEach(param => {
-            const unit_vector = numeric.linspace(1, 1, param.length); // numeric.rep?
-            if (param.length === 0) {
-                alert('Divided by zero.');
-                console.error('Divided by zero.');
-                this.nAlerts++;
-            }
-            priors.push(numeric.div(unit_vector, param.length));
+        let prior_data;
+        if (typeof settings.priors === 'undefined'){
+            prior_data = jsquest.set_prior(num_of_psy_samples);
+        } else {
+            prior_data = settings.priors;
+        }
+
+        prior_data.priors.forEach((prob_array, index) => {
+            if (prob_array.length !== PF_params[index].length) alert(`The length of the probability array ${prob_array.length} does not match the length of the parameter ${PF_params[index].length}.`);
         });
 
-        if (typeof settings.priors !== 'undefined'){
-            settings.priors.forEach((prob_array, index) => {
-                if (Array.isArray(prob_array)){
-                    if (prob_array.length !== this.PF_params[index].length) alert(`setPrior Error: The length of the probability array ${prob_array.length} does not match the length of the parameter ${this.PF_params[index].length}.`);
-                    if (Math.abs(numeric.sum(prob_array) - 1) > 0.01) alert(`setPrior Error: The sum of the probability array is not 1. The sum is ${numeric.sum(prob_array)}.`);
-                    priors[index] = prob_array;
-                }
-            });
-        }
-
-        this.priors = priors;
-        const comb_priors = priors.reduce(jsquest.combvec);
-
-        let mulitiplied_priors = [];
-        if (Array.isArray(comb_priors[0])){
-            comb_priors.forEach(element => {
-                mulitiplied_priors.push(element.reduce(jsquest.multiply_reducer));
-            });    
-        } else {
-            mulitiplied_priors = comb_priors;
-        }
-
-        this.comb_priors = comb_priors;
-
-        const sum_of_priors = numeric.sum(mulitiplied_priors);
-        if (sum_of_priors === 0) {
-            alert('Divided by zero.');
-            console.error('Divided by zero.');
-            this.nAlerts++;
-        }
-        this.normalized_priors = numeric.div(mulitiplied_priors, sum_of_priors);
-
-        if (typeof settings.mult_prior !== 'undefined') {
-            if (settings.mult_prior.length !== this.normalized_priors.length) alert(`mult_prior Error: The length of the mult_prior array ${settings.mult_prior.length} should be ${this.normalized_priors.length}.`);
-            this.normalized_posteriors = settings.mult_prior;
-        } else {
-            this.normalized_posteriors = this.normalized_priors;
-        }
-
+        this.priors = prior_data.priors;
+        this.comb_priors = prior_data.comb_priors;
+        this.normalized_priors = prior_data.normalized_priors;
+        this.normalized_posteriors = this.normalized_priors;
+        this.posteriors = prior_data; // This can be used as the prior distribution of the next condition.
         this.responses = numeric.linspace(0, PF.length-1, PF.length);
                 
         // Precompute outcome proportions (likelihoods)
@@ -3483,7 +3450,52 @@ class jsquest {
             this.nAlerts++;
         }
         this.normalized_posteriors = numeric.div(new_posterior, s);
+        this.posteriors.normalized_priors = this.normalized_posteriors;
         this.expected_entropies_by_stim = jsquest.update_entropy_by_stim(this);
+    }
+
+    static set_prior(prior_array, norm_flag){
+        const priors = [];
+        prior_array.forEach(prob_array => {
+            if (Array.isArray(prob_array)){ // prob_array is an array of probabilities
+                if (typeof norm_flag === 'undefined' || norm_flag){
+                    if (Math.abs(numeric.sum(prob_array) - 1) > 0.01) alert(`set_prior Error: The sum of the probability array is not 1. The sum is ${numeric.sum(prob_array)}.`);
+                }
+                priors.push(prob_array);
+            } else { // prob_array is the number of the psychometric parameter samples
+                const unit_vector = numeric.linspace(1, 1, prob_array); // numeric.rep?
+                if (prob_array === 0) {
+                    alert('Divided by zero.');
+                    console.error('set_prior Error 1: Divided by zero.');
+                }
+                priors.push(numeric.div(unit_vector, prob_array));
+            }
+        });
+
+        const comb_priors = priors.reduce(jsquest.combvec);
+
+        let mulitiplied_priors = [];
+        if (Array.isArray(comb_priors[0])){
+            comb_priors.forEach(element => {
+                mulitiplied_priors.push(element.reduce(jsquest.multiply_reducer));
+            });
+        } else {
+            mulitiplied_priors = comb_priors;
+        }
+
+        const sum_of_priors = numeric.sum(mulitiplied_priors);
+        if (sum_of_priors === 0) {
+            alert('Divided by zero.');
+            console.error('set_prior Error 2: Divided by zero.');
+        }
+
+        const normalized_priors = numeric.div(mulitiplied_priors, sum_of_priors);
+
+        return {
+            priors,
+            comb_priors,
+            normalized_priors
+        }
     }
 
     static update_entropy_by_stim(data){
@@ -3667,6 +3679,19 @@ class jsquest {
         const tmp = Math.floor((end-start)/interval);
         const adjusted_end = start + interval * tmp;
         return numeric.linspace(start, adjusted_end, tmp+1)
+    }
+
+    // exp((-1/2) * ((x_array - mean)/sd)^2)
+    static gauss(x_array, mean, sd, norm_flag){
+        const tmp1 = numeric.div(numeric.sub(x_array, mean), sd);
+        const tmp2 = numeric.pow(tmp1, 2);
+        const tmp3 = numeric.exp(numeric.mul(-0.5, tmp2));
+
+        if (typeof norm_flag === 'undefined' || norm_flag){
+            return numeric.div(tmp3, numeric.sum(tmp3))
+        } else {
+            return tmp3
+        }
     }
 
     // Note that the following code is written in qpUnitizeArray

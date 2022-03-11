@@ -5,7 +5,7 @@
 // 
 import numeric from 'numeric_es6';
 
-console.log('jsQuestPlus Version 1.0.0')
+console.log('jsQuestPlus Version 2.0.0')
 
 class jsquest {
     // PF menas Psychometric Functions
