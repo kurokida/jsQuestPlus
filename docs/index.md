@@ -117,3 +117,16 @@ const jsqp2 = new jsQuestPlus({
     priors: jsqp1.posteriors // Specify the posteriors of the previous condition.
 })
 ```
+
+# Obtaining stimulus parlameters that are not the best
+
+The `getStimParams` function usually return the stimulus parameters that are predicted to yield the most informative results at the next trial. If you want to get a parameter that is not the best, you can specify the order in the argument. See [the discussion #4](https://github.com/kurokida/jsQuestPlus/discussions/4).
+
+
+```javascript
+
+const most_valuable_stim = jsqp.getStimParams()
+const most_valuable_stim2 = jsqp.getStimParams(1) // This is the same as most_valuable_stim
+const third_valuable_stim = jsqp.getStimParams(3) // Third, informative
+
+```
