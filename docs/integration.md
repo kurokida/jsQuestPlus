@@ -6,7 +6,7 @@ We have confirmed that jsQuestPlus works properly in combination with [jsPsych](
 
 ## jsPsych
 
-The JavaScript file (jsQuestPlus.js) must be included using the `<script>` tag like other jsPsych plugins. Initialization is required at the begging of a series of trials. We recommend defining variables as global to access from other functions. 
+The JavaScript file (dist/jsQuestPlus.js) must be included using a `<script>` tag like other jsPsych plugins. Initialization is required at the begging of a series of trials. We recommend defining variables as global to access from other functions. 
 
 In most jsPsych programs, the content of a stimulus is specified in the stimulus property of the plugin and can be changed dynamically using functions as follows:
 
@@ -49,7 +49,9 @@ const loop_node = {
 
 ```
  
-We recommend to use jsQuestPlus in conjunction with [the psychophysics plugin](https://jspsychophysics.hes.kyushu-u.ac.jp/). Using this plugin, the experimenter can more easily present images, lines, rectangles, circles, sounds, moving objects, and Gabor patches, and the timing accuracy will be improved. Note, however, that this plugin does not improve the timing accuracy of moving objects or sound files.
+We recommend using jsQuestPlus in conjunction with [the psychophysics plugin](https://jspsychophysics.hes.kyushu-u.ac.jp/). Using this plugin, the experimenter can more easily present images, lines, rectangles, circles, sounds, moving objects, and Gabor patches, and the timing accuracy will be improved. Note, however, that this plugin does not improve the timing accuracy of moving objects or sound files.
+
+See [the demo programs for jsPsych.](https://github.com/kurokida/jsQuestPlus/tree/main/jsPsychDemo)
 
 ## PsychoPy/PsychoJS
 
