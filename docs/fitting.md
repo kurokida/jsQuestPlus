@@ -2,32 +2,29 @@
 
 One useful feature that jsQuestPlus does not provide, but that QUEST+ based on Mathematica and MATLAB do, is fitting a psychometric function and plotting the results. Fitting allows estimation of psychometric parameters beyond the constraints of the quantized parameter space. Although the fitting or plotting functions cannot be performed during an online experiment, they can be performed afterwards using Mathematica or MATLAB. 
 
-This section explains how to use the MATLAB-based qpFit function to fit the jsQuestPlus data. Note that the qpFit function requires the Optimization Toolbox (The MathWorks, Inc.)
+This section explains how to use the MATLAB-based qpFit function to fit the jsQuestPlus data. Note that the qpFit function requires the Optimization Toolbox (The MathWorks, Inc.).
 
-## Save the instance of the jsQuestPlus class.
+## Save the instance of the jsQuestPlus class
 
-The instance means jsqp in the following case:
+The instance means `jsqp` in the following case:
 
 ```javascript
-
 const jsqp = new jsQuestPlus({
     psych_func:  [func_resp0, func_resp1], 
     stim_samples: [contrast_samples], 
     psych_samples: [threshold_samples, slope, guess, lapse]
 })
-
 ```
 
 The method of storing the instance depends on the experimental tool you are using. Please refer to the tool's documentation for specific instructions. Two properties of the instance, `stim_list` and `resp_list`, will be used.
 
 ## Arrange the data
 
-Here we use the results of running [the demo program](https://www.hes.kyushu-u.ac.jp/~kurokid/jsQuestPlusV2/demos/Example_1stim_1psy_2resp_Watson(2017).html). Substitute the contents of the stim_list for `stim` and the contents of the resp_list for `outcome`. Do not change the variable names.
+Here we use the results of running [the demo program](https://www.hes.kyushu-u.ac.jp/~kurokid/jsQuestPlusV2/demos/Example_1stim_1psy_2resp_Watson(2017).html). Note that there are 32 trials. Substitute the contents of the stim_list for `stim` and the contents of the resp_list for `outcome`. Do not change the variable names.
 
 This is the MATLAB code.
 
 ```matlab
-
 stim = [
     -18,
     -22,
@@ -112,7 +109,7 @@ We refer to [qpQuestPlusCoreFunctionDemo.m](https://github.com/BrainardLab/mQUES
 
 ```matlab
 
-psiParamsQuest = [-20, 3.5, 0.5, 0.02]; % jsqp.getEstimates() returns
+psiParamsQuest = [-20, 3.5, 0.5, 0.02]; % jsqp.getEstimates() returns the values at the end of the series of trials.
 nOutcomes = 2;
 
 %% Find aximum likelihood fit.  Use psiParams from QUEST+ as the starting
