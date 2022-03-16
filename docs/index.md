@@ -130,3 +130,7 @@ const most_valuable_stim2 = jsqp.getStimParams(1) // This is the same as most_va
 const third_valuable_stim = jsqp.getStimParams(3) // Third, informative
 
 ```
+
+# Fitting and plotting the results
+
+See [this page](fitting.md).
