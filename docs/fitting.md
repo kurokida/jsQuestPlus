@@ -21,7 +21,7 @@ on_finish(data){
 }
 ```
 
-We have a demo jsPsychDemo/export_for_qpFit.html which outputs a CSV file. This CSV file will have the following contents.
+We have [a demo](https://github.com/kurokida/jsQuestPlus/blob/main/jsPsychDemo/export_for_qpFit.html) which outputs [a CSV file](https://github.com/kurokida/jsQuestPlus/blob/main/jsPsychDemo/mydata.csv). This CSV file will have the following contents.
 
 ![data_for_qpFit](/images/data_for_qpFit.png)
 
@@ -35,7 +35,7 @@ trialDataTable([1,end],:) = []; % Delete unnecessary rows.
 trialData = table2struct(trialDataTable(:,{'stim', 'outcome'})); % Extract necessary columns and convert it to structure array.
 ```
 
-See jsPsychDemo/run_qpFit.m
+See [jsPsychDemo/run_qpFit.m](https://github.com/kurokida/jsQuestPlus/blob/main/jsPsychDemo/run_qpFit.m)
 
 ## Fitting the results
 
