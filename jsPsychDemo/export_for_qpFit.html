@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <script src="https://unpkg.com/jspsych@7.1.2"></script>
+    <script src="https://unpkg.com/@jspsych/plugin-html-button-response@1.1.0"></script>
+    <script src="https://unpkg.com/@jspsych/plugin-html-keyboard-response@1.1.0"></script>
+    <script src="../dist/jsQuestPlus.js"></script>
+    <link rel="stylesheet" href="https://unpkg.com/jspsych@7.1.2/css/jspsych.css">
+  </head>
+  <body></body>
+  <script>
+    const jsPsych = initJsPsych()
+    console.log(`jsPsych Version ${jsPsych.version()}`)
+
+    const instruction = {
+        type: jsPsychHtmlButtonResponse,
+        stimulus: `<p>This program demonstrates how to save the stimulus and response data for the MATLAB-based qpFit program.</p>
+            <p>See also <a href="https://kurokida.github.io/jsQuestPlus/fitting.html">Fitting and plotting the results of jsQuestPlus</a>.</p>`,
+        choices: ['START']
+    }
+
+    function func_resp0 (stim, threshold, slope, guess, lapse) {
+        const tmp = slope * (stim - threshold)/20
+        return lapse - (guess + lapse -1) * Math.exp ( -Math.pow (10, tmp))
+        // Alternatively, the weibull function provided by jsQUEST is available as follows.
+        // return jsQuestPlus.weibull (stim, threshold, slope, guess, lapse) 
+    }
+
+    function func_resp1(stim, threshold, slope, guess, lapse) {
+        return 1 - func_resp0(stim, threshold, slope, guess, lapse) 
+    }
+
+    const contrast_samples = jsQuestPlus.linspace (-40, 0) // [-40, -39, -38, ..., -1, 0]
+    const threshold_samples = jsQuestPlus.linspace (-40, 0) // [-40, -39, -38, ..., -1, 0]
+    const slope_samples = jsQuestPlus.linspace (2, 5) // [2, 3, 4, 5]
+    const lapse_samples = jsQuestPlus.array (0, 0.01, 0.04) // [0, 0.01, 0.02, 0.03, 0.04]
+    const guess = [0.5] // The parameter of guess is assumed as a single value.
+
+    const jsqp = new jsQuestPlus({
+        psych_func:  [func_resp0, func_resp1], 
+        stim_samples: [contrast_samples], 
+        psych_samples: [threshold_samples, slope_samples, guess, lapse_samples]
+    })
+
+    let trial_num = 1
+    const trialsDesired = 10
+
+    let stim;
+
+    const trial = {
+        type: jsPsychHtmlKeyboardResponse,
+        stimulus: function(){
+            stim = jsqp.getStimParams()
+            // Return the stimulus with the parameters suggested by jsQuestPlus.
+            return `<p>Simulation trial = ${trial_num}/${trialsDesired}</p>
+                <p>Contrast = ${stim}</p><p>Press the F or J key.</p>`
+        },
+        choices: ['f', 'j'],
+        on_finish(data){
+            const response = jsPsych.pluginAPI.compareKeys(data.response, 'f') ? 1 : 0;
+            jsqp.update(stim, response);
+
+            // Save the stimulus and response data for the MATLAB-based qpFit program.
+            data.stim = stim;
+            data.outcome = response + 1; // The responses in JavaScript is 0 or 1, but in MATLAB these correspond to 1 or 2.
+        }
+    }
+
+    const loop_node = {
+        timeline: [trial],
+        loop_function: function(data){
+            if (trial_num < trialsDesired){
+                trial_num++
+                return true
+            } else {
+                return false
+            }
+        }
+    }
+
+    const briefing = {
+        type: jsPsychHtmlButtonResponse,
+        stimulus: function(){
+            const estimates = jsqp.getEstimates()
+            console.log(estimates)
+            return `<p>Final threshold estimate is ${estimates[0]}.</p>
+            <p>Final slope estimate is ${estimates[1]}.</p>
+            <p>Final lapse estimate is ${estimates[3]}.</p>`
+        },
+        choices: ['Finish'],
+        on_finish: function(){
+            const output = jsPsych.data.get().ignore('stimulus'); // To make it easier to see
+            output.localSave('csv','mydata.csv');
+        }
+    }
+
+    jsPsych.run([instruction, loop_node, briefing])
+
+  </script>
+</html>

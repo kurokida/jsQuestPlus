@@ -4,104 +4,38 @@ One useful feature that jsQuestPlus does not provide, but that QUEST+ based on M
 
 This section explains how to use the MATLAB-based qpFit function to fit the jsQuestPlus data. Note that the qpFit function requires the Optimization Toolbox (The MathWorks, Inc.).
 
-## Save the instance of the jsQuestPlus class
+## Save the stimulus paramters and response.
 
-The instance means `jsqp` in the following case:
+For fitting, the stimulus parlameters and responses in all trials are needed. The method of saving the data depends on the experimental tool you are using. Please refer to the tool's documentation for specific instructions. 
+
+For example, if you use jsPsych, you can save the data as follows:
 
 ```javascript
-const jsqp = new jsQuestPlus({
-    psych_func:  [func_resp0, func_resp1], 
-    stim_samples: [contrast_samples], 
-    psych_samples: [threshold_samples, slope, guess, lapse]
-})
+on_finish(data){
+    const response = jsPsych.pluginAPI.compareKeys(data.response, 'f') ? 1 : 0;
+    jsqp.update(stim, response);
+
+    // Save the stimulus and response data for the MATLAB-based qpFit program.
+    data.stim = stim;
+    data.outcome = response + 1; // The responses in JavaScript is 0 or 1, but in MATLAB these correspond to 1 or 2.
+}
 ```
 
-The method of storing the instance depends on the experimental tool you are using. Please refer to the tool's documentation for specific instructions. Two properties of the instance, `stim_list` and `resp_list`, will be used.
+We have a demo jsPsychDemo/export_for_qpFit.html which outputs a CSV file. This CSV file will have the following contents.
+
+![data_for_qpFit](/images/data_for_qpFit.png)
 
 ## Arrange the data
 
-Here we use the results of running [the demo program](https://www.hes.kyushu-u.ac.jp/~kurokid/jsQuestPlusV2/demos/Example_1stim_1psy_2resp_Watson(2017).html). Note that there are 32 trials. Substitute the contents of the stim_list for `stim` and the contents of the resp_list for `outcome`. Do not change the variable names.
-
-This is the MATLAB code.
+Here is the MATLAB code to import the file and arrange the data. Note that the data in the first and last rows in the figure above are not needed.
 
 ```matlab
-stim = [
-    -18,
-    -22,
-    -25,
-    -28,
-    -30,
-    -22,
-    -13,
-    -15,
-    -16,
-    -18,
-    -19,
-    -20,
-    -21,
-    -22,
-    -23,
-    -19,
-    -20,
-    -20,
-    -18,
-    -18,
-    -19,
-    -17,
-    -17,
-    -18,
-    -18,
-    -18,
-    -19,
-    -19,
-    -19,
-    -19,
-    -19,
-    -19
-];
-
-outcome = [
-    1,
-    1,
-    1,
-    1,
-    0,
-    0,
-    1,
-    1,
-    1,
-    1,
-    1,
-    1,
-    1,
-    1,
-    0,
-    1,
-    1,
-    0,
-    1,
-    1,
-    0,
-    1,
-    1,
-    1,
-    1,
-    1,
-    1,
-    1,
-    1,
-    1,
-    1,
-    1
-];
-
-outcome = outcome + 1; % The responses in JavaScript is 0 or 1, but in MATLAB these correspond to 1 or 2.
-
-trialDataTable = table(stim, outcome);
-
-trialData = table2struct(trialDataTable);
-
+trialDataTable = readtable("mydata.csv");
+trialDataTable([1,end],:) = []; % Delete unnecessary rows.
+trialData = table2struct(trialDataTable(:,{'stim', 'outcome'})); % Extract necessary columns and convert it to structure array.
 ```
+
+See jsPsychDemo/run_qpFit.m
 
 ## Fitting the results
 
@@ -157,6 +91,7 @@ drawnow;
 
 ## Sample image
 
-You will get the following figure.
+You will get the following figure. This figure was made by using the data of [the demo program](https://www.hes.kyushu-u.ac.jp/~kurokid/jsQuestPlusV2/demos/Example_1stim_1psy_2resp_Watson(2017).html). 
+
 
 ![qpFit_image](/images/qpFit_image.png)
