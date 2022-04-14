@@ -4,7 +4,7 @@ One useful feature that jsQuestPlus does not provide, but that QUEST+ based on M
 
 This section explains how to use the MATLAB-based qpFit function to fit the jsQuestPlus data. Note that the qpFit function requires the Optimization Toolbox (The MathWorks, Inc.).
 
-## Save the stimulus paramters and response.
+## Save the stimulus paramters and responses.
 
 For fitting, the stimulus parlameters and responses in all trials are needed. The method of saving the data depends on the experimental tool you are using. Please refer to the tool's documentation for specific instructions. 
 
@@ -25,7 +25,7 @@ We have [a demo](https://github.com/kurokida/jsQuestPlus/blob/main/jsPsychDemo/e
 
 ## Arrange the data
 
-Here is the MATLAB code to import the file and arrange the data. Note that the data in the first and last rows in the figure above are not needed.
+Here is the MATLAB code to import the file and arrange the data. Note that the first and last rows in the sample CSV file are not needed.
 
 ```matlab
 trialDataTable = readtable("mydata.csv");
