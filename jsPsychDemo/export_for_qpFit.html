@@ -32,8 +32,8 @@
 
     const contrast_samples = jsQuestPlus.linspace (-40, 0) // [-40, -39, -38, ..., -1, 0]
     const threshold_samples = jsQuestPlus.linspace (-40, 0) // [-40, -39, -38, ..., -1, 0]
-    const slope_samples = jsQuestPlus.linspace (2, 5) // [2, 3, 4, 5]
-    const lapse_samples = jsQuestPlus.array (0, 0.01, 0.04) // [0, 0.01, 0.02, 0.03, 0.04]
+    const slope_samples = [3.5]
+    const lapse_samples = [0.02]
     const guess = [0.5] // The parameter of guess is assumed as a single value.
 
     const jsqp = new jsQuestPlus({
@@ -43,7 +43,8 @@
     })
 
     let trial_num = 1
-    const trialsDesired = 10
+
+    const simulated_answers = [1, 1, 1, 1, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 0, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]
 
     let stim;
 
@@ -52,12 +53,14 @@
         stimulus: function(){
             stim = jsqp.getStimParams()
             // Return the stimulus with the parameters suggested by jsQuestPlus.
-            return `<p>Simulation trial = ${trial_num}/${trialsDesired}</p>
-                <p>Contrast = ${stim}</p><p>Press the F or J key.</p>`
+            return `<p>Simulation trial = ${trial_num}/${simulated_answers.length}</p>
+                <p>Contrast = ${stim}</p><p>Press the space key.</p>`
         },
-        choices: ['f', 'j'],
+        choices: [' '],
         on_finish(data){
-            const response = jsPsych.pluginAPI.compareKeys(data.response, 'f') ? 1 : 0;
+            // const response = jsPsych.pluginAPI.compareKeys(data.response, 'f') ? 1 : 0; // in an acutal experiment.
+            const response = simulated_answers[trial_num-1]; // simulation
+            
             jsqp.update(stim, response);
 
             // Save the stimulus and response data for the MATLAB-based qpFit program.
@@ -69,7 +72,7 @@
     const loop_node = {
         timeline: [trial],
         loop_function: function(data){
-            if (trial_num < trialsDesired){
+            if (trial_num < simulated_answers.length){
                 trial_num++
                 return true
             } else {
@@ -83,9 +86,7 @@
         stimulus: function(){
             const estimates = jsqp.getEstimates()
             console.log(estimates)
-            return `<p>Final threshold estimate is ${estimates[0]}.</p>
-            <p>Final slope estimate is ${estimates[1]}.</p>
-            <p>Final lapse estimate is ${estimates[3]}.</p>`
+            return `<p>Final threshold estimate is ${estimates[0]}.</p>`
         },
         choices: ['Finish'],
         on_finish: function(){

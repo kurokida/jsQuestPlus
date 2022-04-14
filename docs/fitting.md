@@ -21,9 +21,7 @@ on_finish(data){
 }
 ```
 
-We have [a demo](https://github.com/kurokida/jsQuestPlus/blob/main/jsPsychDemo/export_for_qpFit.html) which outputs [a CSV file](https://github.com/kurokida/jsQuestPlus/blob/main/jsPsychDemo/mydata.csv). This CSV file will have the following contents.
-
-![data_for_qpFit](/images/data_for_qpFit.png)
+We have [a demo](https://github.com/kurokida/jsQuestPlus/blob/main/jsPsychDemo/export_for_qpFit.html) which outputs [a CSV file](https://github.com/kurokida/jsQuestPlus/blob/main/jsPsychDemo/mydata.csv).
 
 ## Arrange the data
 
@@ -91,7 +89,6 @@ drawnow;
 
 ## Sample image
 
-You will get the following figure. This figure was made by using the data of [the demo program](https://www.hes.kyushu-u.ac.jp/~kurokid/jsQuestPlusV2/demos/Example_1stim_1psy_2resp_Watson(2017).html). 
+You will get the following figure. 
 
-
-![qpFit_image](/images/qpFit_image.png)
+![qpFit_image](/images/qpFit_image2.jpg)
