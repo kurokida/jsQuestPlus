@@ -266,13 +266,15 @@
     const simulation = []
     const instruction = {
         type: 'html-button-response',
-        stimulus: `<div class="instruction"><p>この度、私（黒木）は心理物理学のオンライン実験において閾値を測定するためのツール（jsQuestPlus）を開発しました。</p>
-            <p>本調査は、みなさんのパソコンで問題なくjsQuestPlusが機能するかを確認するためのものです。</p>
-            <p>みなさんのほうで何かを回答していただく必要はありませんが、みなさんが現在お使いの機種、OS（WindowsやMacなど）、ウェブブラウザ（Edge, Safari, Chromeなど）の情報を記録させていただきます。</p>
-            <p>個人が特定されるような情報を取得することはなく、例えば「WindowsのChromeで、jsQuestPlusが何秒で動作した」というような情報が記録されます。また記録した情報を集計して論文等で発表する予定です。</p>
-            <p>何かがインストールされるということもありません。</p>
-            <p>調査への協力に同意をいただける場合には「次へ」のボタンを押してください。</p></div>`,
-        choices: ['次へ'],
+        stimulus: `<div class="instruction"><p>We have developed a tool named jsQuestPlus to measure thresholds in online experiments.</p>
+            <p>This survey is to check if jsQuestPlus works well on your computer.</p>
+            <p>You don't need to answer any questions, but we will record information about your computer model, operating system (Windows, Mac, etc.), and web browser (Edge, Safari, Chrome, etc.).</p>
+            <p>We will not obtain any information that will identify you personally, but will record information such as "How many seconds did jsQuestPlus run on Windows Chrome" for example. 
+                We will also publish statistics based on the data in a paper.</p>
+            <p>Nothing will be installed on your computer.</p>
+            <p>If you agree to cooperate with the survey, please click the "Continue" button.</p>
+            </div>`,
+        choices: ['Continue'],
     }
 
     simulation.push(instruction)
@@ -286,9 +288,10 @@
                 stimulus: function(){
                     // const progress = Math.round(trial_num/simulated_answers.length * 100)
                     const progress = 100
-                    return `<p>調査中です。30秒ほどで終わります。</p><p>画面が自動的に切り替わりますので、このままお待ちください。</p>
-                        <p>調査の進捗状況は、画面の上方にあるバーで分かります。</p>
-                        <p>万一、エラーが表示されたときにはご報告いただけますと大変助かります。</p>`},
+                    return `<p>The program is running. It will finish in about 30 seconds.</p>
+                    <p>Please wait as the screen will automatically change.</p>
+                    <p>The progress of the program will be indicated by the bar at the top of the screen.</p>
+                    <p>If you run into errors, please let us know.</p>`},
                 choices: ['jsPsych.NO_KEYS'],
                 data: {Trial: i+1},
                 trial_duration: 100,
@@ -305,9 +308,9 @@
 
     const briefing = {
         type: 'html-button-response',
-        stimulus: `<div class="instruction"><p>調査は終了しました。ご協力いただき本当にありがとうございました。</p>
-            <p>ウィンドウを閉じていただいて大丈夫です。</p>
-            <p>もしjsQuestPlusに関心のあるかたは、<a href="https://github.com/kurokida/jsQuestPlus">こちら</a>をご覧ください。</p>
+        stimulus: `<div class="instruction"><p>The survey has been completed. Thank you very much for your cooperation.</p>
+            <p>You can close this window.</p>
+            <p>If you are interested in jsQuestPlus, see <a href="https://github.com/kurokida/jsQuestPlus">this page</a>in detail.</p>
             </div>`,
         on_start: function(trial){
             const myrandID = jsPsych.randomization.randomID(8);
@@ -380,7 +383,7 @@
     jsPsych.init({
         timeline: simulation,
         show_progress_bar: true,
-        message_progress_bar: 'このバーは進捗状況を示しています。',
+        message_progress_bar: 'Progress bar',
         on_finish: function(){
             // jsPsych.data.displayData(); 
         },
@@ -389,12 +392,11 @@
     function getDateStr(){
         const now = new Date();
         const year = now.getFullYear();
-        let month = now.getMonth() + 1; // 月
-        let day = now.getDate(); // 日
-        let hour = now.getHours(); // 時
-        let minute = now.getMinutes(); // 分
-        let sec = now.getSeconds(); // 秒
-        // 数値が1桁の場合、頭に0を付けて2桁で表示する指定
+        let month = now.getMonth() + 1; // Month
+        let day = now.getDate(); // Day
+        let hour = now.getHours(); // Hour
+        let minute = now.getMinutes(); // Minute
+        let sec = now.getSeconds(); // Second
         if(month < 10) { month = "0" + month; }
         if(day < 10) { day = "0" + day; }
         if(hour < 10) { hour = "0" + hour; }
