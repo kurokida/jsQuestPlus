@@ -11,7 +11,7 @@ knitr::opts_chunk$set(echo = TRUE)
 
 # jsQuestPlus simulation
 
-We show below how accurately jsQuestPlus could estimate the psychometric parameters by the simulations described in our paper.
+We show below how accurately jsQuestPlus could estimate the psychometric parameters in the simulations described in our paper.
 
 We obtained simulation data of 37 browser–computer combinations. In other words, we obtained 37 estimates for each psychometric parameter. Each histogram shows the frequency of the 37 estimates.
 
