@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <script src="https://unpkg.com/jspsych@7.2.3"></script>
+    <script src="https://unpkg.com/@jspsych/plugin-html-button-response@1.1.1"></script>
+    <script src="https://unpkg.com/@jspsych/plugin-html-keyboard-response@1.1.1"></script>
+    <script src="../dist/jsQuestPlus.js"></script>
+    <link rel="stylesheet" href="https://unpkg.com/jspsych@7.1.2/css/jspsych.css">
+</head>
+<body></body>
+<script>
+    // This is a demonstration using web worker. It is a beta version and has not been fully tested.
+    // This program couldn't be run in a local computer, must be uploaded to a web server. 
+    // MDN help page: https://developer.mozilla.org/en-US/docs/Web/API/Web_Workers_API/Using_web_workers
+    // Useful GitHub repo: https://github.com/mdn/dom-examples/tree/master/web-workers/simple-web-worker
+
+    const jsPsych = initJsPsych({
+        on_finish: function() {
+            jsPsych.data.displayData();
+        }
+    })
+
+    let trial_num = 1
+    const nTrials = 20
+
+    let stim_params;
+    let estimates;
+
+    let myWorker;
+    if (window.Worker) {
+        myWorker = new Worker("worker.js"); // The worker.js includes data for jsQuestPlus.
+    } else {
+        console.log('Your browser doesn\'t support web workers.');
+    }
+
+    myWorker.onmessage = function(e) {
+        console.log('Main: Message received from worker');
+        // Worker returns an array which includes stimulus paramters first, then estimates.
+        console.log(e.data);
+        stim_params = e.data[0];
+        estimates = e.data[1];
+    }
+
+    // to get the initial stimulus parameters.
+    myWorker.postMessage([undefined, undefined]);
+
+    const instruction = {
+        type: jsPsychHtmlButtonResponse,
+        stimulus: 'This is a demo using web workers.',
+        choices: ['START'],
+    };
+
+    const fixation = {
+        type: jsPsychHtmlKeyboardResponse,
+        stimulus: '<p style="font-size:48px;">+</p>',
+        choices: "NO_KEYS",
+        trial_duration: 1000,
+    }
+
+    const trial = {
+        type: jsPsychHtmlKeyboardResponse,
+        stimulus: function(){
+            // Note that it is assumed that stim_params has been computed by the worker by the time this function is called.
+            // The presentation time of the fixation cross should be long enough (about 1 second) for the worker to calculate.
+            return `<p style="font-size:24px;"">The stimulus parameter is ${stim_params}</p>`;
+        },
+        choices: ['f', 'j'],
+        prompt: `<p>Press the F or J key.</p>`,
+        on_finish(data){
+            let response
+            if(jsPsych.pluginAPI.compareKeys(data.response, 'f')){
+                response = 1
+            } else {
+                response = 0
+            }
+
+            // ask the worker to update the data of jsQuestPlus and return the optimal stimulus parameters for the next trial.
+            myWorker.postMessage([stim_params, response]);
+        }
+    }
+
+    const loop_node = {
+        timeline: [fixation, trial],
+        loop_function: function(data){
+            if (trial_num < nTrials){
+                trial_num++
+                return true
+            } else {
+                return false
+            }
+        }
+    }
+
+    const debriefing = {
+        type: jsPsychHtmlButtonResponse,
+        stimulus: function(){
+            console.log(estimates)
+
+            return `<p>The threshold has been estimated to be: ${estimates[0]}</p>`;
+
+        },
+        choices: ['Finish'],
+    }
+
+    jsPsych.run([instruction, loop_node, debriefing])
+
+</script>
+
+</html>
