@@ -1,0 +1,112 @@
+---
+title: "Histograms for computation time."
+author: "Daiichiro Kuroki"
+date: "2022/6/10"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+# jsQuestPlus simulation
+
+We measured (a) the time of initializing jsQuestPlus, (b) the time it took to determine the stimulus parameters, specifically the time to call the getStimParams function, and (c) the time it took to call the update function. Duration (a) was obtained once for each browser–computer combination, while durations (b) and (c) were averaged over trials since they were measured repeatedly for each browser–computer combination.
+
+## Simulation 1
+
+This simulation corresponds to the example 1 of Watson (2017): Estimation of contrast threshold {1, 1, 2}
+
+- The number of stimulus parameters is 1
+- The number of psychometric parameters is 1
+- The number of responses is 2
+- The number of samples is 3362
+
+```{r Simulation1}
+dat_jsqp <- read.table('jsQuestPlus_20220111.csv', sep=",", header=T) 
+all_data_in_this_condition <- sub_dat <- subset(dat_jsqp, samples == 3362) 
+sub_dat <- subset(all_data_in_this_condition, Trial == 1) # Retrieve unique initialization time.
+hist(sub_dat$init_time, main = "Time for initialization" , xlab = "Time (ms)")
+mean(sub_dat$init_time)
+
+hist(all_data_in_this_condition$getStimParams_time, main = "Time for determination of stimulus parameters" , xlab = "Time (ms)")
+mean(all_data_in_this_condition$getStimParams_time)
+
+hist(all_data_in_this_condition$update_time, main = "Time for updating" , xlab = "Time (ms)")
+mean(all_data_in_this_condition$update_time)
+
+```
+
+## Time for determination of stimulus parameters
+
+## Simulation 2
+
+This simulation corresponds to the example 2 of Watson (2017): Estimation of contrast threshold, slope, and lapse {1, 3, 2} 
+
+- The number of stimulus parameters is 1
+- The number of psychometric parameters is 3
+- The number of responses is 2
+- The number of samples is 67240
+
+```{r Simulation2}
+dat_jsqp <- read.table('jsQuestPlus_20220111.csv', sep=",", header=T) 
+all_data_in_this_condition <- sub_dat <- subset(dat_jsqp, samples == 67240) 
+sub_dat <- subset(all_data_in_this_condition, Trial == 1) # Retrieve unique initialization time.
+hist(sub_dat$init_time, main = "Time for initialization" , xlab = "Time (ms)")
+mean(sub_dat$init_time)
+
+hist(all_data_in_this_condition$getStimParams_time, main = "Time for determination of stimulus parameters" , xlab = "Time (ms)")
+mean(all_data_in_this_condition$getStimParams_time)
+
+hist(all_data_in_this_condition$update_time, main = "Time for updating" , xlab = "Time (ms)")
+mean(all_data_in_this_condition$update_time)
+
+```
+
+## Simulation 3
+
+This simulation corresponds to the example 4 of Watson (2017): Contrast sensitivity function {2, 3, 2}
+
+- The number of stimulus parameters is 2
+- The number of psychometric parameters is 3
+- The number of responses is 2
+- The number of samples is 660660
+
+```{r Simulation3}
+dat_jsqp <- read.table('jsQuestPlus_20220111.csv', sep=",", header=T) 
+all_data_in_this_condition <- sub_dat <- subset(dat_jsqp, samples == 660660) 
+sub_dat <- subset(all_data_in_this_condition, Trial == 1) # Retrieve unique initialization time.
+hist(sub_dat$init_time, seq(0, 1800, 50), main = "Time for initialization" , xlab = "Time (ms)")
+mean(sub_dat$init_time)
+
+hist(all_data_in_this_condition$getStimParams_time, main = "Time for determination of stimulus parameters" , xlab = "Time (ms)")
+mean(all_data_in_this_condition$getStimParams_time)
+
+hist(all_data_in_this_condition$update_time, main = "Time for updating" , xlab = "Time (ms)")
+mean(all_data_in_this_condition$update_time)
+
+```
+
+## Simulation 4
+
+This simulation corresponds to the example 5 of Watson (2017): Spatiotemporal contrast sensitivity {3, 4, 2} 
+
+- The number of stimulus parameters is 3
+- The number of psychometric parameters is 4
+- The number of responses is 2
+- The number of samples is 911250
+
+```{r Simulation4}
+dat_jsqp <- read.table('jsQuestPlus_20220111.csv', sep=",", header=T) 
+all_data_in_this_condition <- sub_dat <- subset(dat_jsqp, samples == 911250) 
+sub_dat <- subset(all_data_in_this_condition, Trial == 1) # Retrieve unique initialization time.
+hist(sub_dat$init_time, seq(0, 2500, 50), main = "Time for initialization" , xlab = "Time (ms)")
+mean(sub_dat$init_time)
+
+hist(all_data_in_this_condition$getStimParams_time, main = "Time for determination of stimulus parameters" , xlab = "Time (ms)")
+mean(all_data_in_this_condition$getStimParams_time)
+
+hist(all_data_in_this_condition$update_time, main = "Time for updating" , xlab = "Time (ms)")
+mean(all_data_in_this_condition$update_time)
+
+```
