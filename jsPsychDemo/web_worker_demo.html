@@ -8,7 +8,7 @@
 </head>
 <body></body>
 <script>
-    // This is a demonstration using web worker. It is a beta version and has not been fully tested.
+    // This is a demonstration using web workers. It is a beta version and has not been fully tested.
     // This program couldn't be run in a local computer, must be uploaded to a web server. 
     // MDN help page: https://developer.mozilla.org/en-US/docs/Web/API/Web_Workers_API/Using_web_workers
     // Useful GitHub repo: https://github.com/mdn/dom-examples/tree/master/web-workers/simple-web-worker
@@ -24,6 +24,7 @@
 
     let stim_params;
     let estimates;
+    let update_flag;
 
     let myWorker;
     if (window.Worker) {
@@ -38,10 +39,12 @@
         console.log(e.data);
         stim_params = e.data[0];
         estimates = e.data[1];
+        update_flag = true; // allow to present stimuli
     }
 
     // to get the initial stimulus parameters.
     myWorker.postMessage([undefined, undefined]);
+    update_flag = false; // Immediately after calling postMessage, set the flag to false.
 
     const instruction = {
         type: jsPsychHtmlButtonResponse,
@@ -61,7 +64,14 @@
         stimulus: function(){
             // Note that it is assumed that stim_params has been computed by the worker by the time this function is called.
             // The presentation time of the fixation cross should be long enough (about 1 second) for the worker to calculate.
-            return `<p style="font-size:24px;"">The stimulus parameter is ${stim_params}</p>`;
+
+            if (!update_flag) {
+                const end_message = "Stimulus parameters have not been updated. Please inform the experimenter.";
+                alert (end_message);
+                jsPsych.endExperiment(end_message); // The end_message is not properly displayed, but the experiment is forced to terminate.
+            } else {
+                return `<p style="font-size:24px;"">The stimulus parameter is ${stim_params}</p>`;
+            }
         },
         choices: ['f', 'j'],
         prompt: `<p>Press the F or J key.</p>`,
@@ -75,6 +85,7 @@
 
             // ask the worker to update the data of jsQuestPlus and return the optimal stimulus parameters for the next trial.
             myWorker.postMessage([stim_params, response]);
+            update_flag = false; // Immediately after calling postMessage, set the flag to false.
         }
     }
 
