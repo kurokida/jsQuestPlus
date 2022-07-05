@@ -1,3 +1,4 @@
+# Created by Thomas Pronk. https://github.com/tpronk
 # Library for parsing userAgent
 library(uaparserjs)
 # Read data
