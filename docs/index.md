@@ -134,3 +134,7 @@ const third_valuable_stim = jsqp.getStimParams(3) // Third, informative
 # Fitting and plotting the results
 
 See [this page](fitting.md).
+
+# Web workers
+
+Although jsQuestPlus is fast enough for most online experiments, one might be concerned with the execution time. A more flexible solution would be the incorporation of [Web Workers](https://developer.mozilla.org/en-US/docs/Web/API/Web_Workers_API/Using_web_workers), so that jsQuestPlus calculations are executed as a background process that is less likely to interfere with the task procedure. We offer [a sample program](https://github.com/kurokida/jsQuestPlus/blob/main/jsPsychDemo/web_worker_demo.html), but note that it has not been fully tested.
