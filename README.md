@@ -3,6 +3,17 @@
 QUEST+ ([Watson, 2017](https://doi.org/10.1167/17.3.10)) is an extension of QUEST ([Watson & Pelli, 1983](https://doi.org/10.3758/BF03202828))
 that can deal with multiple stimulus parameters, multiple psychometric parameters, and more than two responses options. The jsQuestPlus JavaScript library allows researchers to use the QUEST+ method in online experiments.
 
+# How to cite
+
+We prefer to cite the paper, but either citation is acceptable.
+
+## Paper citation
+
+Kuroki, D., & Pronk, T. (2022). jsQuestPlus: A JavaScript implementation of the QUEST+ method for estimating psychometric function parameters in online experiments. *Behavior Research Methods*. [https://doi.org/10.3758/s13428-022-01948-8](https://doi.org/10.3758/s13428-022-01948-8)
+
+## Software citation (for version 2.0.0)
+Kuroki, D., & Pronk, T. (2022). jsQuestPlus: A JavaScript library to use the QUEST+ method in online experiments. (Version 2.0.0) [Computer software]. [https://github.com/kurokida/jsQuestPlus](https://github.com/kurokida/jsQuestPlus)
+
 # How to use
 
 See [the GitHub page](https://kurokida.github.io/jsQuestPlus/).
