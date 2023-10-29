@@ -2,10 +2,8 @@
 // https://github.com/kurokida/jsQuestPlus/blob/417c8ecba3d7cc4daf2110ebd08c71c912b921d9/test/jsQuestPlus-test1.html
 // You can execute this example by running `node jsQuestPlus_test.js`
 //
-// The two lines below import jsQuestPlus as an ES6 Module
-import * as jsQuestPlusModule from '../dist/jsQuestPlus.module.js'
-// For some reason, the actual module is in a property named `default`, hence the workaround below
-const jsQuestPlus = jsQuestPlusModule.default
+// The line below import jsQuestPlus as an ES6 Module
+import jsQuestPlus from '../dist/jsQuestPlus.module.js'
 
 // For the rest, this script is a literal copy of lines 13 to 93 of this example:
 // https://github.com/kurokida/jsQuestPlus/blob/main/test/jsQuestPlus-test1.html
