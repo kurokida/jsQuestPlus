@@ -16,8 +16,7 @@ Kuroki, D., & Pronk, T. (2022). jsQuestPlus: A JavaScript library to use the QUE
 
 # How to use
 
-See [the GitHub page](https://kurokida.github.io/jsQuestPlus/).
-See [Customization of Psychometric function](https://github.com/kurokida/jsQuestPlus/wiki/Customization-of-Psychometric-function)
+See [the GitHub page](https://kurokida.github.io/jsQuestPlus/) and [Customization of Psychometric function](https://github.com/kurokida/jsQuestPlus/wiki/Customization-of-Psychometric-function)
 
 # Demonstrations
 
