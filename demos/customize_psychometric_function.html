@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <script src="../dist/jsQuestPlus.js"></script>
+    </head>
+<body>
+    <p>This is a sample program for <a href="https://github.com/kurokida/jsQuestPlus/wiki/Customization-of-Psychometric-function">customizing a psychometric function</a></p>
+    <p>There is a single stimulus dimension (contrast), and only a single psychometric parameter (threshold). </p>
+    <p>Please open the JavaScript console window in your browser. If you are using Chrome on Windows, press Ctrl + Shift + I to open the console.</p>
+</body>
+<script>
+    // Psychometric function corresponding to correct responses (response = 1).
+    // This is a logistic function. https://en.wikipedia.org/wiki/Logistic_function
+    function func_resp1(stim, threshold, k) {
+        return 1 / (1 + Math.exp(-k * (stim - threshold)))
+    }
+    
+    // Psychometric function corresponding to incorrect responses (response = 0)
+    function func_resp0(stim, threshold, k) {
+        return 1 - func_resp1(stim, threshold, k) 
+    }
+
+    const contrast_samples = jsQuestPlus.linspace(0, 1, 100)
+    const threshold_samples = jsQuestPlus.linspace(0, 1, 100)
+    const k = 10; // This value is fixed in this sample code, but you can also estimate it usgin the QUEST+ method.
+    const steepness = [k] // Don't forget to add brackets, i.e., specify as an array.
+
+    // jsqp means jsQuestPlus. You can use any variable name you like.
+    const jsqp = new jsQuestPlus({
+        psych_func:  [func_resp0, func_resp1], // Note the order.
+        stim_samples: [contrast_samples], 
+        psych_samples: [threshold_samples, steepness]
+    })
+    console.log(jsqp)
+
+    //////////////////////////////////////////////////////////////////
+    // SIMULATION
+    const true_threshold = 0.5
+    // Note that the response is binominal.
+    function simulate_observer(contrast){
+        if (Math.random() > func_resp0(contrast, true_threshold, k)){
+            return 1 // yes
+        } else {
+            return 0 // no
+        }
+    }
+
+    const nTrials = 32 // arbitrary
+    for (let i = 0; i < nTrials; i++){
+        const contrast = jsqp.getStimParams()
+        const resp = simulate_observer(contrast) 
+        console.log(`Trial ${i+1}: Contrast = ${contrast}; Response = ${resp}`)
+        jsqp.update(contrast, resp)
+    }
+
+    const estimates = jsqp.getEstimates() // Let's see if this returns the nearly same array as [true_threshold, k].
+    console.log(estimates)
+
+    console.log(`The true threshold is set to ${true_threshold}.`)
+    console.log(`jsQuestPlus estimates as ${estimates[0]}.`)
+</script>
+</html>
