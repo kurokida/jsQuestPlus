@@ -58,7 +58,7 @@ This is the sample code for [jsPsych](https://www.jspsych.org/7.1/) users. This 
 - [See the source code.](https://github.com/kurokida/jsQuestPlus/blob/main/jsPsychDemo/jsQuestPlus_jsPsychDemo_auto.html)
 
 # Convenience functions
-- The [numeric.js](https://github.com/sloisel/numeric) library performs matrix/array calculations at high speeds. This library is included in jsQuestPlus, with some of its functions available by prefixing them with `jsQuestPlus.`: `abs, add, cos, dim, div, dot, exp, floor, isFinite, isNaN, linspace, log, mod, mul, pow, round, sin, sqrt, sub, sum, transpose`.
+- The [numeric.js](https://github.com/sloisel/numeric) library developed by Sébastien Loisel under the MIT licence performs matrix/array calculations at high speeds. This library is included in jsQuestPlus, with some of its functions available by prefixing them with `jsQuestPlus.`: `abs, add, cos, dim, div, dot, exp, floor, isFinite, isNaN, linspace, log, mod, mul, pow, round, sin, sqrt, sub, sum, transpose`.
 
 # Information for developers
 
