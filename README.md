@@ -73,4 +73,4 @@ To package jsQuestPlus and it's dependencies, and export those as UMD bundle, ru
 `npx rollup -c`
 
 ## Notes
-jsQuestPlus depends on a [fork of the numeric library]((https://github.com/tpronk/numeric), which turns this library into an ES6 module.
+jsQuestPlus depends on a [fork of the numeric library](https://github.com/tpronk/numeric), which turns this library into an ES6 module.
