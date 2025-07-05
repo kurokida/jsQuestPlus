@@ -1,6 +1,6 @@
 {
-  "name": "jsquest_plus",
-  "version": "2.0.0",
+  "name": "jsquest-plus",
+  "version": "2.1.0",
   "description": "A JavaScript implementation of the QUEST+ staircase algorithm (Watson, 2017).",
   "main": "src/jsQuestPlus.js",
   "type": "module",
@@ -16,7 +16,10 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "repository": "https://github.com/kurokida/jsQUEST/tree/quest_plus",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/kurokida/jsQuestPlus.git"
+  },
   "author": {
     "name": "Daiichiro Kuroki"
   },
@@ -29,7 +32,7 @@
   ],
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/kurokida/jsQUEST/issues"
+    "url": "https://github.com/kurokida/jsQuestPlus/issues"
   },
-  "homepage": "https://kurokida.github.io/jsQUEST/"
+  "homepage": "https://kurokida.github.io/jsQuestPlus/"
 }
