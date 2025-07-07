@@ -10,7 +10,8 @@ The package is available on [npm](https://www.npmjs.com/package/jsquest-plus
 
 `npm install jsquest-plus`
 
-Many thanks to @tpronk and @mieubrisse for their help.
+Many thanks to [@tpronk](https://github.com/tpronk
+) and [@mieubrisse](https://github.com/mieubrisse) for their help.
 
 # How to cite
 
