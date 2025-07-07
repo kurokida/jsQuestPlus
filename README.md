@@ -3,6 +3,10 @@
 QUEST+ ([Watson, 2017](https://doi.org/10.1167/17.3.10)) is an extension of QUEST ([Watson & Pelli, 1983](https://doi.org/10.3758/BF03202828))
 that can deal with multiple stimulus parameters, multiple psychometric parameters, and more than two responses options. The jsQuestPlus JavaScript library allows researchers to use the QUEST+ method in online experiments.
 
+# Installation
+
+`npm install jsquest-plus`
+
 # How to cite
 
 We prefer to cite the paper, but either citation is acceptable.
