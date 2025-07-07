@@ -5,7 +5,12 @@ that can deal with multiple stimulus parameters, multiple psychometric parameter
 
 # Installation
 
+The package is available on [npm](https://www.npmjs.com/package/jsquest-plus
+).
+
 `npm install jsquest-plus`
+
+Many thanks to @tpronk and @mieubrisse for their help.
 
 # How to cite
 
